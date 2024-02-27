@@ -33,7 +33,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
                 .address(registerRequestDTO.getAddress())
                 .email(registerRequestDTO.getEmail())
                 .password(passwordEncoder.encode(registerRequestDTO.getPassword()))
-                .role(Role.ADMIN)
+                .role(Role.SERVICE_ADVISOR)
                 .build();
         userRepository.save(user);
         return ApiResponseDTO.builder()
