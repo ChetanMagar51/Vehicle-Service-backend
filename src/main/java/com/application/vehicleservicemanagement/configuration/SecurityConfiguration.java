@@ -28,7 +28,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/vsm/auth/**").permitAll()
                         .requestMatchers("/vsm/demo/everyone").permitAll()
                         .requestMatchers("/vsm/demo/service-advisor").hasAnyAuthority(Role.SERVICE_ADVISOR.name())
-                        .requestMatchers("/vsm/demo/admin").hasAnyAuthority(Role.ADMIN.name())
+                        .requestMatchers("/vsm/demo/admin", "/vsm/user/**").hasAnyAuthority(Role.ADMIN.name())
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
