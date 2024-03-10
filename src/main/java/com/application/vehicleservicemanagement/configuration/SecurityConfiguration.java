@@ -23,10 +23,11 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf(AbstractHttpConfigurer::disable)
+              .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/vsm/auth/**").permitAll()
                         .requestMatchers("/vsm/demo/everyone").permitAll()
+                        .requestMatchers("/pdf/createInvoice").permitAll()
                         .requestMatchers("/vsm/demo/service-advisor").hasAnyAuthority(Role.SERVICE_ADVISOR.name())
                         .requestMatchers("/vsm/demo/admin", "/vsm/user/**").hasAnyAuthority(Role.ADMIN.name())
                         .anyRequest().authenticated())
