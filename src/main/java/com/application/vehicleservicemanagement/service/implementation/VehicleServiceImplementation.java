@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class VehicleServiceImplementation implements VehicleService {
@@ -40,13 +42,19 @@ public class VehicleServiceImplementation implements VehicleService {
 
     @Override
     public VehicleDTO getVehicleByVehicleNumber(String vehicleNumber) {
-        Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleId", vehicleNumber));
+        Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         return modelMapper.map(vehicle, VehicleDTO.class);
     }
 
     @Override
+    public List<VehicleDTO> getAllVehicles() {
+        List<Vehicle> vehicleList = vehicleRepository.findAll();
+        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDTO.class)).toList();
+    }
+
+    @Override
     public ApiResponseDTO scheduleVehicleForService(String vehicleNumber, Long serviceAdvisorId) {
-        Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleId", vehicleNumber));
+        Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         ServiceAdvisor serviceAdvisor = (ServiceAdvisor) userRepository.findById(serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("Service Advisor", "id", serviceAdvisorId.toString()));
         if (!(vehicle.getServiceStatus() == ServiceStatus.DUE)) {
             return ApiResponseDTO.builder().status("Failed to process the request!! Try again.").status("Failed").build();
@@ -59,7 +67,7 @@ public class VehicleServiceImplementation implements VehicleService {
 
     @Override
     public ApiResponseDTO startVehicleService(String vehicleNumber) {
-        Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleId", vehicleNumber));
+        Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         if (!(vehicle.getServiceStatus() == ServiceStatus.SCHEDULED)) {
             return ApiResponseDTO.builder().status("Failed to process the request!! Try again.").status("Failed").build();
         }
@@ -70,7 +78,7 @@ public class VehicleServiceImplementation implements VehicleService {
 
     @Override
     public ApiResponseDTO completeVehicleService(String vehicleNumber) {
-        Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleId", vehicleNumber));
+        Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         if (!(vehicle.getServiceStatus() == ServiceStatus.UNDER_SERVICING)) {
             return ApiResponseDTO.builder().status("Failed to process the request!! Try again.").status("Failed").build();
         }
