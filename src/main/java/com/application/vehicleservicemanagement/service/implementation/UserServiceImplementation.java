@@ -2,6 +2,7 @@ package com.application.vehicleservicemanagement.service.implementation;
 
 import com.application.vehicleservicemanagement.dto.ApiResponseDTO;
 import com.application.vehicleservicemanagement.dto.UserDTO;
+import com.application.vehicleservicemanagement.entity.Role;
 import com.application.vehicleservicemanagement.entity.User;
 import com.application.vehicleservicemanagement.exception.ResourceNotFoundException;
 import com.application.vehicleservicemanagement.repository.UserRepository;
@@ -46,6 +47,12 @@ public class UserServiceImplementation implements UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id.toString()));
         userRepository.delete(user);
         return ApiResponseDTO.builder().message("User deleted successfully.").status("Success").build();
+    }
+
+    @Override
+    public List<UserDTO> getAllServiceAdvisors() {
+        List<User> userList = userRepository.findAllByRole(Role.SERVICE_ADVISOR);
+        return userList.stream().map(user -> modelMapper.map(user, UserDTO.class)).toList();
     }
 
 }
