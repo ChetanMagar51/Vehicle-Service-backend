@@ -16,7 +16,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@MappedSuperclass
+@Entity
+@Table(name = "user")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +42,12 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "serviceAdvisor")
+    private List<Vehicle> vehicleList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "serviceAdvisor")
+    private List<ServiceRecord> serviceRecordList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

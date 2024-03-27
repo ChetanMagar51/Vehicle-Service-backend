@@ -2,8 +2,8 @@ package com.application.vehicleservicemanagement.service.implementation;
 
 import com.application.vehicleservicemanagement.dto.ApiResponseDTO;
 import com.application.vehicleservicemanagement.dto.VehicleDTO;
-import com.application.vehicleservicemanagement.entity.ServiceAdvisor;
 import com.application.vehicleservicemanagement.entity.ServiceStatus;
+import com.application.vehicleservicemanagement.entity.User;
 import com.application.vehicleservicemanagement.entity.Vehicle;
 import com.application.vehicleservicemanagement.exception.ResourceNotFoundException;
 import com.application.vehicleservicemanagement.repository.UserRepository;
@@ -55,11 +55,11 @@ public class VehicleServiceImplementation implements VehicleService {
     @Override
     public ApiResponseDTO scheduleVehicleForService(String vehicleNumber, Long serviceAdvisorId) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
-        ServiceAdvisor serviceAdvisor = (ServiceAdvisor) userRepository.findById(serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("Service Advisor", "id", serviceAdvisorId.toString()));
+        User user = userRepository.findById(serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("Service Advisor", "id", serviceAdvisorId.toString()));
         if (!(vehicle.getServiceStatus() == ServiceStatus.DUE)) {
             return ApiResponseDTO.builder().status("Failed to process the request!! Try again.").status("Failed").build();
         }
-        vehicle.setServiceAdvisor(serviceAdvisor);
+        vehicle.setServiceAdvisor(user);
         vehicle.setServiceStatus(ServiceStatus.SCHEDULED);
         vehicleRepository.save(vehicle);
         return ApiResponseDTO.builder().message("Vehicle scheduled successfully.").status("Success").build();

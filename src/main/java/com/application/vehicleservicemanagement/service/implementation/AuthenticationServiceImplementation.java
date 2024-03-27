@@ -5,7 +5,6 @@ import com.application.vehicleservicemanagement.dto.AuthenticationRequestDTO;
 import com.application.vehicleservicemanagement.dto.AuthenticationResponseDTO;
 import com.application.vehicleservicemanagement.dto.RegisterRequestDTO;
 import com.application.vehicleservicemanagement.entity.Role;
-import com.application.vehicleservicemanagement.entity.ServiceAdvisor;
 import com.application.vehicleservicemanagement.entity.User;
 import com.application.vehicleservicemanagement.exception.ResourceNotFoundException;
 import com.application.vehicleservicemanagement.repository.UserRepository;
@@ -27,7 +26,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
 
     @Override
     public ApiResponseDTO register(RegisterRequestDTO registerRequestDTO) {
-        ServiceAdvisor serviceAdvisor = (ServiceAdvisor) ServiceAdvisor.builder()
+        User user = User.builder()
                 .firstName(registerRequestDTO.getFirstName())
                 .lastName(registerRequestDTO.getLastName())
                 .phone(registerRequestDTO.getPhone())
@@ -36,7 +35,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
                 .password(passwordEncoder.encode(registerRequestDTO.getPassword()))
                 .role(Role.SERVICE_ADVISOR)
                 .build();
-        userRepository.save(serviceAdvisor);
+        userRepository.save(user);
         return ApiResponseDTO.builder()
                 .message("User registered successfully !!")
                 .status("Success")

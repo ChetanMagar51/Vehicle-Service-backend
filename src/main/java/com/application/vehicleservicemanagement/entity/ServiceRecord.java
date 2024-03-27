@@ -29,7 +29,7 @@ public class ServiceRecord {
 
     @ManyToOne
     @JoinColumn(name = "service_advisor_id")
-    private ServiceAdvisor serviceAdvisor;
+    private User serviceAdvisor;
 
     @OneToOne(fetch = FetchType.LAZY)
     private Vehicle vehicle;
