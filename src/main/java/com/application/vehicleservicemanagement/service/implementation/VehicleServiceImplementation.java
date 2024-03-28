@@ -2,6 +2,7 @@ package com.application.vehicleservicemanagement.service.implementation;
 
 import com.application.vehicleservicemanagement.dto.ApiResponseDTO;
 import com.application.vehicleservicemanagement.dto.VehicleDTO;
+import com.application.vehicleservicemanagement.entity.Role;
 import com.application.vehicleservicemanagement.entity.ServiceStatus;
 import com.application.vehicleservicemanagement.entity.User;
 import com.application.vehicleservicemanagement.entity.Vehicle;
@@ -55,7 +56,7 @@ public class VehicleServiceImplementation implements VehicleService {
     @Override
     public ApiResponseDTO scheduleVehicleForService(String vehicleNumber, Long serviceAdvisorId) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
-        User user = userRepository.findById(serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("Service Advisor", "id", serviceAdvisorId.toString()));
+        User user = userRepository.findByRoleAndId(Role.SERVICE_ADVISOR, serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("Service Advisor", "id", serviceAdvisorId.toString()));
         if (!(vehicle.getServiceStatus() == ServiceStatus.DUE)) {
             return ApiResponseDTO.builder().status("Failed to process the request!! Try again.").status("Failed").build();
         }

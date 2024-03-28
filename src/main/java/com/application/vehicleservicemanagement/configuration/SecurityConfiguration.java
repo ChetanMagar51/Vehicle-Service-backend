@@ -25,10 +25,8 @@ public class SecurityConfiguration {
         httpSecurity
               .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/vsm/auth/**").permitAll()
-                        .requestMatchers("/vsm/demo/everyone").permitAll()
-                        .requestMatchers("/pdf/createInvoice").permitAll()
-                        .requestMatchers("/vsm/demo/service-advisor").hasAnyAuthority(Role.SERVICE_ADVISOR.name())
+                        .requestMatchers("/vsm/auth/**", "/vsm/demo/everyone", "/pdf/createInvoice").permitAll()
+                        .requestMatchers("/vsm/demo/service-advisor", "/vsm/vehicle/**").hasAnyAuthority(Role.SERVICE_ADVISOR.name())
                         .requestMatchers("/vsm/demo/admin", "/vsm/user/**").hasAnyAuthority(Role.ADMIN.name())
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
