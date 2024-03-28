@@ -25,6 +25,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
+    @GetMapping("/get/all/serviceAdvisor")
+    public ResponseEntity<List<UserDTO>> getAllServiceAdvisors() {
+        return ResponseEntity.ok(userService.getAllServiceAdvisors());
+    }
+
     @PatchMapping("/update")
     public ResponseEntity<ApiResponseDTO> updateUserById(@RequestParam(value = "id") Long id, @RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(userService.updateUserById(id, userDTO));

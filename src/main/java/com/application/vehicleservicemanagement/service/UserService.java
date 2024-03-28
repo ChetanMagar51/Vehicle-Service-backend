@@ -10,6 +10,8 @@ public interface UserService {
 
     List<UserDTO> getAllUsers();
 
+    List<UserDTO> getAllServiceAdvisors();
+
     ApiResponseDTO updateUserById(Long id, UserDTO userDTO);
 
     ApiResponseDTO deleteUserById(Long id);
