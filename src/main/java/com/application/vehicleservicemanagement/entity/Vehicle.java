@@ -29,7 +29,7 @@ public class Vehicle {
     private ServiceStatus serviceStatus;
 
     @ManyToOne
-    @JoinColumn(name = "service_advisor_id")
+    @JoinColumn(name = "user_id")
     private User serviceAdvisor;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

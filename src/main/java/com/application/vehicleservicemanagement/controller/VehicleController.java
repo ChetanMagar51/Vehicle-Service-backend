@@ -22,27 +22,12 @@ public class VehicleController {
     }
 
     @PostMapping("/get")
-    public ResponseEntity<VehicleDTO> getVehicleByVehicleNumber(@RequestParam(value = "vehicleNumber") String vehicleNumber) {
+    public ResponseEntity<VehicleDTO> getVehicleByVehicleNumber(@RequestParam(value = "vehicleNumber", required = true) String vehicleNumber) {
         return ResponseEntity.ok(vehicleService.getVehicleByVehicleNumber(vehicleNumber));
     }
 
     @GetMapping("/get/all")
     public ResponseEntity<List<VehicleDTO>> getAllVehicles() {
         return ResponseEntity.ok(vehicleService.getAllVehicles());
-    }
-
-    @PostMapping("/schedule")
-    public ResponseEntity<ApiResponseDTO> scheduleVehicleForService(@RequestParam(value = "vehicleNumber") String vehicleNumber, @RequestParam(value = "serviceAdvisorId") Long serviceAdvisorId) {
-        return ResponseEntity.ok(vehicleService.scheduleVehicleForService(vehicleNumber, serviceAdvisorId));
-    }
-
-    @PostMapping("/startService")
-    public ResponseEntity<ApiResponseDTO> startVehicleService(@RequestParam(value = "vehicleNumber") String vehicleNumber) {
-        return ResponseEntity.ok(vehicleService.startVehicleService(vehicleNumber));
-    }
-
-    @PostMapping("/completeService")
-    public ResponseEntity<ApiResponseDTO> completeVehicleService(@RequestParam(value = "vehicleNumber") String vehicleNumber) {
-        return ResponseEntity.ok(vehicleService.completeVehicleService(vehicleNumber));
     }
 }

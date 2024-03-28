@@ -16,7 +16,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/get")
-    public ResponseEntity<UserDTO> getUser(@RequestParam(value = "id") Long id) {
+    public ResponseEntity<UserDTO> getUser(@RequestParam(value = "id", required = true) Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
@@ -31,12 +31,12 @@ public class UserController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<ApiResponseDTO> updateUserById(@RequestParam(value = "id") Long id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<ApiResponseDTO> updateUserById(@RequestParam(value = "id", required = true) Long id, @RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(userService.updateUserById(id, userDTO));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<ApiResponseDTO> deleteUser(@RequestParam(value = "id") Long id) {
+    public ResponseEntity<ApiResponseDTO> deleteUser(@RequestParam(value = "id", required = true) Long id) {
         return ResponseEntity.ok(userService.deleteUserById(id));
     }
 }
