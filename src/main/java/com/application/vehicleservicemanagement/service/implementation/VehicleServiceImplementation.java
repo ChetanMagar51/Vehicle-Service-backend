@@ -58,7 +58,7 @@ public class VehicleServiceImplementation implements VehicleService {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         User user = userRepository.findByRoleAndId(Role.SERVICE_ADVISOR, serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("Service Advisor", "id", serviceAdvisorId.toString()));
         if (!(vehicle.getServiceStatus() == ServiceStatus.DUE)) {
-            return ApiResponseDTO.builder().status("Failed to process the request!! Try again.").status("Failed").build();
+            return ApiResponseDTO.builder().message("Failed to process the request!! Try again.").status("Failed").build();
         }
         vehicle.setServiceAdvisor(user);
         vehicle.setServiceStatus(ServiceStatus.SCHEDULED);
@@ -70,7 +70,7 @@ public class VehicleServiceImplementation implements VehicleService {
     public ApiResponseDTO startVehicleService(String vehicleNumber) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         if (!(vehicle.getServiceStatus() == ServiceStatus.SCHEDULED)) {
-            return ApiResponseDTO.builder().status("Failed to process the request!! Try again.").status("Failed").build();
+            return ApiResponseDTO.builder().message("Failed to process the request!! Try again.").status("Failed").build();
         }
         vehicle.setServiceStatus(ServiceStatus.UNDER_SERVICING);
         vehicleRepository.save(vehicle);
@@ -81,7 +81,7 @@ public class VehicleServiceImplementation implements VehicleService {
     public ApiResponseDTO completeVehicleService(String vehicleNumber) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         if (!(vehicle.getServiceStatus() == ServiceStatus.UNDER_SERVICING)) {
-            return ApiResponseDTO.builder().status("Failed to process the request!! Try again.").status("Failed").build();
+            return ApiResponseDTO.builder().message("Failed to process the request!! Try again.").status("Failed").build();
         }
         vehicle.setServiceStatus(ServiceStatus.SERVICED);
         vehicleRepository.save(vehicle);
