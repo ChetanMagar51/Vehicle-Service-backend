@@ -1,10 +1,12 @@
 package com.application.vehicleservicemanagement.entity;
 
 import jakarta.persistence.*;
+import jdk.jfr.BooleanFlag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -20,6 +22,7 @@ public class ServiceRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @DateTimeFormat
     private Date date;
 
     private Integer quantity;
@@ -29,8 +32,14 @@ public class ServiceRecord {
 
     private Double amount;
 
+    @BooleanFlag
+    private Boolean isPaymentCompleted;
+
+    @BooleanFlag
+    private Boolean isAdminApproved;
+
     @ManyToOne
-    @JoinColumn(name = "service_advisor_id")
+    @JoinColumn(name = "user_id")
     private User serviceAdvisor;
 
     @OneToOne(fetch = FetchType.LAZY)
