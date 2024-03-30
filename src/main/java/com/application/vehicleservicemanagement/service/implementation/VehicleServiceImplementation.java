@@ -1,11 +1,9 @@
 package com.application.vehicleservicemanagement.service.implementation;
 
 import com.application.vehicleservicemanagement.dto.ApiResponseDTO;
+import com.application.vehicleservicemanagement.dto.ItemDTO;
 import com.application.vehicleservicemanagement.dto.VehicleDTO;
-import com.application.vehicleservicemanagement.entity.Role;
-import com.application.vehicleservicemanagement.entity.ServiceStatus;
-import com.application.vehicleservicemanagement.entity.User;
-import com.application.vehicleservicemanagement.entity.Vehicle;
+import com.application.vehicleservicemanagement.entity.*;
 import com.application.vehicleservicemanagement.exception.ResourceNotFoundException;
 import com.application.vehicleservicemanagement.repository.UserRepository;
 import com.application.vehicleservicemanagement.repository.VehicleRepository;
@@ -14,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -54,6 +53,30 @@ public class VehicleServiceImplementation implements VehicleService {
     }
 
     @Override
+    public List<VehicleDTO> getAllDueVehicles() {
+        List<Vehicle> vehicleList = vehicleRepository.findAllByServiceStatus(ServiceStatus.DUE);
+        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDTO.class)).toList();
+    }
+
+    @Override
+    public List<VehicleDTO> getAllScheduledVehicles() {
+        List<Vehicle> vehicleList = vehicleRepository.findAllByServiceStatus(ServiceStatus.SCHEDULED);
+        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDTO.class)).toList();
+    }
+
+    @Override
+    public List<VehicleDTO> getAllVehiclesUnderServicing() {
+        List<Vehicle> vehicleList = vehicleRepository.findAllByServiceStatus(ServiceStatus.UNDER_SERVICING);
+        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDTO.class)).toList();
+    }
+
+    @Override
+    public List<VehicleDTO> getAllServicedVehicles() {
+        List<Vehicle> vehicleList = vehicleRepository.findAllByServiceStatus(ServiceStatus.SERVICED);
+        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDTO.class)).toList();
+    }
+
+    @Override
     public ApiResponseDTO scheduleVehicleForService(String vehicleNumber, Long serviceAdvisorId) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         User user = userRepository.findByRoleAndId(Role.SERVICE_ADVISOR, serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("Service Advisor", "id", serviceAdvisorId.toString()));
@@ -78,11 +101,21 @@ public class VehicleServiceImplementation implements VehicleService {
     }
 
     @Override
-    public ApiResponseDTO completeVehicleService(String vehicleNumber) {
+    public ApiResponseDTO completeVehicleService(String vehicleNumber, List<ItemDTO> itemDTOList) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         if (!(vehicle.getServiceStatus() == ServiceStatus.UNDER_SERVICING)) {
             return ApiResponseDTO.builder().message("Failed to process the request!! Try again.").status("Failed").build();
         }
+        ServiceRecord serviceRecord = ServiceRecord.builder()
+                .vehicle(vehicle)
+                .serviceAdvisor(vehicle.getServiceAdvisor())
+                .itemList(itemDTOList.stream().map(itemDTO -> modelMapper.map(itemDTO, Item.class)).toList())
+                .amount(0d)
+                .date(new Date())
+                .isAdminApproved(false)
+                .isPaymentCompleted(false)
+                .build();
+        vehicle.setServiceRecord(serviceRecord);
         vehicle.setServiceStatus(ServiceStatus.SERVICED);
         vehicleRepository.save(vehicle);
         return ApiResponseDTO.builder().message("Vehicle service completed.").status("Success").build();
