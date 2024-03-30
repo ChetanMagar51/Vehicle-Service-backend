@@ -1,6 +1,7 @@
 package com.application.vehicleservicemanagement.entity;
 
 import jakarta.persistence.*;
+import jdk.jfr.BooleanFlag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,6 +40,11 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+
+    private Integer scheduledVehicleCount;
+
+    @BooleanFlag
+    private Boolean isAvailable;
 
     @Enumerated(EnumType.STRING)
     private Role role;

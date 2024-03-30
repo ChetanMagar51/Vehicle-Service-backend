@@ -9,9 +9,9 @@ import com.application.vehicleservicemanagement.repository.UserRepository;
 import com.application.vehicleservicemanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -35,7 +35,7 @@ public class UserServiceImplementation implements UserService {
     @Override
     public List<UserDTO> getAllServiceAdvisors() {
         List<User> userList = userRepository.findAllByRole(Role.SERVICE_ADVISOR);
-        return userList.stream().map(user -> modelMapper.map(user, UserDTO.class)).toList();
+        return userList.stream().sorted(Comparator.comparingInt(User::getScheduledVehicleCount)).map(user -> modelMapper.map(user, UserDTO.class)).toList();
     }
 
     @Override
