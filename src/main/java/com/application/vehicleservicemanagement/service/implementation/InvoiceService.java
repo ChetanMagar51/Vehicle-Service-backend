@@ -2,7 +2,6 @@ package com.application.vehicleservicemanagement.service.implementation;
 
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
-import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 @Service
 public class InvoiceService {
@@ -124,4 +122,5 @@ public class InvoiceService {
 
         return new ByteArrayInputStream(out.toByteArray());
     }
+
 }

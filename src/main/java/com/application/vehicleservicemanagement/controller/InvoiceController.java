@@ -1,5 +1,6 @@
 package com.application.vehicleservicemanagement.controller;
 
+import com.application.vehicleservicemanagement.entity.ServiceRecord;
 import com.application.vehicleservicemanagement.service.implementation.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;

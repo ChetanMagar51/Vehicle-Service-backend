@@ -22,6 +22,8 @@ public class ServiceRecord {
 
     private Date date;
 
+    private Integer quantity;
+
     @OneToMany
     private List<Item> itemList;
 
