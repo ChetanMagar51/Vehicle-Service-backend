@@ -27,7 +27,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/vsm/auth/**", "/pdf/createInvoice").permitAll()
                         .requestMatchers("/vsm/service/**").hasAnyAuthority(Role.SERVICE_ADVISOR.name())
-                        .requestMatchers("/vsm/user/**", "/vsm/vehicle/**").hasAnyAuthority(Role.ADMIN.name())
+                        .requestMatchers("/vsm/user/**", "/vsm/vehicle/**", "/vsm/item").hasAnyAuthority(Role.ADMIN.name())
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

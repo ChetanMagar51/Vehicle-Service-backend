@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImplementation implements ItemService {
@@ -36,6 +38,12 @@ public class ItemServiceImplementation implements ItemService {
     public ItemDTO getByName(String name) {
         Item item = itemRepository.findByNameIgnoreCase(name).orElseThrow(() -> new ResourceNotFoundException("Item", "name", name));
         return modelMapper.map(item, ItemDTO.class);
+    }
+
+    @Override
+    public List<ItemDTO> getAllItems() {
+        List<Item> items = itemRepository.findAll();
+        return items.stream().map(item -> modelMapper.map(item, ItemDTO.class)).toList();
     }
 
     @Override
