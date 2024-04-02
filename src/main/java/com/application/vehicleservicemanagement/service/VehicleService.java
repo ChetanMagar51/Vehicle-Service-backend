@@ -1,7 +1,6 @@
 package com.application.vehicleservicemanagement.service;
 
 import com.application.vehicleservicemanagement.dto.ApiResponseDTO;
-import com.application.vehicleservicemanagement.dto.ItemDTO;
 import com.application.vehicleservicemanagement.dto.VehicleDTO;
 
 import java.util.List;
@@ -27,5 +26,5 @@ public interface VehicleService {
 
     ApiResponseDTO startVehicleService(String vehicleNumber);
 
-    ApiResponseDTO completeVehicleService(String vehicleNumber, List<ItemDTO> itemDTOList);
+    ApiResponseDTO completeVehicleService(String vehicleNumber, List<String> itemNameList);
 }

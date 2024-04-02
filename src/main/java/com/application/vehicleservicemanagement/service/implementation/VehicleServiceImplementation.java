@@ -1,10 +1,10 @@
 package com.application.vehicleservicemanagement.service.implementation;
 
 import com.application.vehicleservicemanagement.dto.ApiResponseDTO;
-import com.application.vehicleservicemanagement.dto.ItemDTO;
 import com.application.vehicleservicemanagement.dto.VehicleDTO;
 import com.application.vehicleservicemanagement.entity.*;
 import com.application.vehicleservicemanagement.exception.ResourceNotFoundException;
+import com.application.vehicleservicemanagement.repository.ItemRepository;
 import com.application.vehicleservicemanagement.repository.UserRepository;
 import com.application.vehicleservicemanagement.repository.VehicleRepository;
 import com.application.vehicleservicemanagement.service.VehicleService;
@@ -14,12 +14,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class VehicleServiceImplementation implements VehicleService {
     private final VehicleRepository vehicleRepository;
     private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -101,16 +103,17 @@ public class VehicleServiceImplementation implements VehicleService {
     }
 
     @Override
-    public ApiResponseDTO completeVehicleService(String vehicleNumber, List<ItemDTO> itemDTOList) {
+    public ApiResponseDTO completeVehicleService(String vehicleNumber, List<String> itemNameList) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         if (!(vehicle.getServiceStatus() == ServiceStatus.UNDER_SERVICING)) {
             return ApiResponseDTO.builder().message("Failed to process the request!! Try again.").status("Failed").build();
         }
+        List<Optional<Item>> itemList = itemNameList.stream().map(itemRepository::findByNameIgnoreCase).toList();
         ServiceRecord serviceRecord = ServiceRecord.builder()
                 .vehicle(vehicle)
                 .serviceAdvisor(vehicle.getServiceAdvisor())
-                .itemList(itemDTOList.stream().map(itemDTO -> modelMapper.map(itemDTO, Item.class)).toList())
-                .amount(0d)
+                .itemList(itemList.stream().map(item -> modelMapper.map(item, Item.class)).toList())
+                .amount(itemList.stream().mapToDouble(item -> item.get().getPrice()).sum())
                 .date(new Date())
                 .isAdminApproved(false)
                 .isPaymentCompleted(false)

@@ -24,6 +24,10 @@ public class Vehicle {
 
     private String vehicleDescription;
 
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ServiceStatus serviceStatus;
