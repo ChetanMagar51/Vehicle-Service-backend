@@ -14,7 +14,7 @@
 	<name>Vehicle Service Management</name>
 	<description>Vehicle Service Management</description>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 		<sentry.version>7.3.0</sentry.version>
 	</properties>
 	<dependencies>
