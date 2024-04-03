@@ -25,7 +25,8 @@ public class SecurityConfiguration {
         httpSecurity
               .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/vsm/auth/**", "/pdf/createInvoice").permitAll()
+                        .requestMatchers("/vsm/auth/**", "/pdf/createInvoice", "/swagger-ui/**",
+                                "/swagger-resources/**","/v3/api-docs/**").permitAll()
                         .requestMatchers("/vsm/service/**").hasAnyAuthority(Role.SERVICE_ADVISOR.name())
                         .requestMatchers("/vsm/user/**", "/vsm/vehicle/**", "/vsm/item").hasAnyAuthority(Role.ADMIN.name())
                         .anyRequest().authenticated())
