@@ -1,7 +1,7 @@
 package com.application.vehicleservicemanagement.service.implementation;
 
-import com.application.vehicleservicemanagement.dto.ApiResponseDTO;
-import com.application.vehicleservicemanagement.dto.VehicleDTO;
+import com.application.vehicleservicemanagement.dto.ApiResponse;
+import com.application.vehicleservicemanagement.dto.VehicleDto;
 import com.application.vehicleservicemanagement.entity.*;
 import com.application.vehicleservicemanagement.exception.ResourceNotFoundException;
 import com.application.vehicleservicemanagement.repository.ItemRepository;
@@ -25,7 +25,7 @@ public class VehicleServiceImplementation implements VehicleService {
     private final ModelMapper modelMapper;
 
     @Override
-    public ApiResponseDTO registerVehicle(VehicleDTO vehicleDTO) {
+    public ApiResponse registerVehicle(VehicleDto vehicleDTO) {
         Vehicle vehicle = Vehicle.builder()
                 .vehicleNumber(vehicleDTO.getVehicleNumber())
                 .vehicleModel(vehicleDTO.getVehicleModel())
@@ -33,80 +33,80 @@ public class VehicleServiceImplementation implements VehicleService {
                 .serviceStatus(ServiceStatus.DUE)
                 .build();
         vehicleRepository.save(vehicle);
-        return ApiResponseDTO.builder().message("Vehicle registered successfully.").status("Success").build();
+        return ApiResponse.builder().message("Vehicle registered successfully.").status("Success").build();
     }
 
     @Override
-    public VehicleDTO getVehicleById(Long vehicleId) {
+    public VehicleDto getVehicleById(Long vehicleId) {
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleId", vehicleId.toString()));
-        return modelMapper.map(vehicle, VehicleDTO.class);
+        return modelMapper.map(vehicle, VehicleDto.class);
     }
 
     @Override
-    public VehicleDTO getVehicleByVehicleNumber(String vehicleNumber) {
+    public VehicleDto getVehicleByVehicleNumber(String vehicleNumber) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
-        return modelMapper.map(vehicle, VehicleDTO.class);
+        return modelMapper.map(vehicle, VehicleDto.class);
     }
 
     @Override
-    public List<VehicleDTO> getAllVehicles() {
+    public List<VehicleDto> getAllVehicles() {
         List<Vehicle> vehicleList = vehicleRepository.findAll();
-        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDTO.class)).toList();
+        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDto.class)).toList();
     }
 
     @Override
-    public List<VehicleDTO> getAllDueVehicles() {
+    public List<VehicleDto> getAllDueVehicles() {
         List<Vehicle> vehicleList = vehicleRepository.findAllByServiceStatus(ServiceStatus.DUE);
-        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDTO.class)).toList();
+        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDto.class)).toList();
     }
 
     @Override
-    public List<VehicleDTO> getAllScheduledVehicles() {
+    public List<VehicleDto> getAllScheduledVehicles() {
         List<Vehicle> vehicleList = vehicleRepository.findAllByServiceStatus(ServiceStatus.SCHEDULED);
-        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDTO.class)).toList();
+        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDto.class)).toList();
     }
 
     @Override
-    public List<VehicleDTO> getAllVehiclesUnderServicing() {
+    public List<VehicleDto> getAllVehiclesUnderServicing() {
         List<Vehicle> vehicleList = vehicleRepository.findAllByServiceStatus(ServiceStatus.UNDER_SERVICING);
-        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDTO.class)).toList();
+        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDto.class)).toList();
     }
 
     @Override
-    public List<VehicleDTO> getAllServicedVehicles() {
+    public List<VehicleDto> getAllServicedVehicles() {
         List<Vehicle> vehicleList = vehicleRepository.findAllByServiceStatus(ServiceStatus.SERVICED);
-        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDTO.class)).toList();
+        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDto.class)).toList();
     }
 
     @Override
-    public ApiResponseDTO scheduleVehicleForService(String vehicleNumber, Long serviceAdvisorId) {
+    public ApiResponse scheduleVehicleForService(String vehicleNumber, Long serviceAdvisorId) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         User user = userRepository.findByRoleAndId(Role.SERVICE_ADVISOR, serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("Service Advisor", "id", serviceAdvisorId.toString()));
         if (!(vehicle.getServiceStatus() == ServiceStatus.DUE)) {
-            return ApiResponseDTO.builder().message("Failed to process the request!! Try again.").status("Failed").build();
+            return ApiResponse.builder().message("Failed to process the request!! Try again.").status("Failed").build();
         }
         vehicle.setServiceAdvisor(user);
         vehicle.setServiceStatus(ServiceStatus.SCHEDULED);
         vehicleRepository.save(vehicle);
-        return ApiResponseDTO.builder().message("Vehicle scheduled successfully.").status("Success").build();
+        return ApiResponse.builder().message("Vehicle scheduled successfully.").status("Success").build();
     }
 
     @Override
-    public ApiResponseDTO startVehicleService(String vehicleNumber) {
+    public ApiResponse startVehicleService(String vehicleNumber) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         if (!(vehicle.getServiceStatus() == ServiceStatus.SCHEDULED)) {
-            return ApiResponseDTO.builder().message("Failed to process the request!! Try again.").status("Failed").build();
+            return ApiResponse.builder().message("Failed to process the request!! Try again.").status("Failed").build();
         }
         vehicle.setServiceStatus(ServiceStatus.UNDER_SERVICING);
         vehicleRepository.save(vehicle);
-        return ApiResponseDTO.builder().message("Service started for vehicle.").status("Success").build();
+        return ApiResponse.builder().message("Service started for vehicle.").status("Success").build();
     }
 
     @Override
-    public ApiResponseDTO completeVehicleService(String vehicleNumber, List<String> itemNameList) {
+    public ApiResponse completeVehicleService(String vehicleNumber, List<String> itemNameList) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         if (!(vehicle.getServiceStatus() == ServiceStatus.UNDER_SERVICING)) {
-            return ApiResponseDTO.builder().message("Failed to process the request!! Try again.").status("Failed").build();
+            return ApiResponse.builder().message("Failed to process the request!! Try again.").status("Failed").build();
         }
         List<Optional<Item>> itemList = itemNameList.stream().map(itemRepository::findByNameIgnoreCase).toList();
         ServiceRecord serviceRecord = ServiceRecord.builder()
@@ -121,6 +121,6 @@ public class VehicleServiceImplementation implements VehicleService {
         vehicle.setServiceRecord(serviceRecord);
         vehicle.setServiceStatus(ServiceStatus.SERVICED);
         vehicleRepository.save(vehicle);
-        return ApiResponseDTO.builder().message("Vehicle service completed.").status("Success").build();
+        return ApiResponse.builder().message("Vehicle service completed.").status("Success").build();
     }
 }

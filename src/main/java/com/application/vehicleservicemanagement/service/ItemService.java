@@ -1,25 +1,25 @@
 package com.application.vehicleservicemanagement.service;
 
-import com.application.vehicleservicemanagement.dto.ApiResponseDTO;
-import com.application.vehicleservicemanagement.dto.ItemDTO;
+import com.application.vehicleservicemanagement.dto.ApiResponse;
+import com.application.vehicleservicemanagement.dto.ItemDto;
 
 import java.util.List;
 
 public interface ItemService {
 
-    ApiResponseDTO add(ItemDTO itemDTO);
+    ApiResponse add(ItemDto itemDTO);
 
-    ItemDTO getById(Long itemId);
+    ItemDto getById(Long itemId);
 
-    ItemDTO getByName(String name);
+    ItemDto getByName(String name);
 
-    List<ItemDTO> getAllItems();
+    List<ItemDto> getAllItems();
 
-    ApiResponseDTO updateById(Long itemId, ItemDTO itemDTO);
+    ApiResponse updateById(Long itemId, ItemDto itemDTO);
 
-    ApiResponseDTO updateByName(String name, ItemDTO itemDTO);
+    ApiResponse updateByName(String name, ItemDto itemDTO);
 
-    ApiResponseDTO deleteById(Long itemId);
+    ApiResponse deleteById(Long itemId);
 
-    ApiResponseDTO deleteByName(String name);
+    ApiResponse deleteByName(String name);
 }

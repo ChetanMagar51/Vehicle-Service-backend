@@ -26,33 +26,33 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
     private User user;
 
     @Override
-    public ApiResponseDTO register(RegisterRequestDTO registerRequestDTO) {
+    public ApiResponse register(RegisterRequest registerRequest) {
         User user = User.builder()
-                .firstName(registerRequestDTO.getFirstName())
-                .lastName(registerRequestDTO.getLastName())
-                .phone(registerRequestDTO.getPhone())
-                .address(registerRequestDTO.getAddress())
-                .email(registerRequestDTO.getEmail())
-                .password(passwordEncoder.encode(registerRequestDTO.getPassword()))
+                .firstName(registerRequest.getFirstName())
+                .lastName(registerRequest.getLastName())
+                .phone(registerRequest.getPhone())
+                .address(registerRequest.getAddress())
+                .email(registerRequest.getEmail())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .role(Role.SERVICE_ADVISOR)
                 .build();
         userRepository.save(user);
-        return ApiResponseDTO.builder()
+        return ApiResponse.builder()
                 .message("User registered successfully !!")
                 .status("Success")
                 .build();
     }
 
     @Override
-    public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO authenticationRequestDTO) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequestDTO.getEmail(), authenticationRequestDTO.getPassword()));
-        user = userRepository.findByEmail(authenticationRequestDTO.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User", "userEmail", authenticationRequestDTO.getEmail()));
+    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
+        user = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User", "userEmail", authenticationRequest.getEmail()));
         String jwtToken = jwtUtil.generateToken(user);
-        return AuthenticationResponseDTO.builder().token(jwtToken).build();
+        return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
     @Override
-    public UserDTO getCurrentUser() {
-        return modelMapper.map(user, UserDTO.class);
+    public UserDto getCurrentUser() {
+        return modelMapper.map(user, UserDto.class);
     }
 }

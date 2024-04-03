@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemDTO {
-    private Long id;
-    private String name;
-    private Double price;
+public class AuthenticationRequest {
+    private String email;
+    private String password;
 }

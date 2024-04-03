@@ -1,18 +1,18 @@
 package com.application.vehicleservicemanagement.service;
 
-import com.application.vehicleservicemanagement.dto.ApiResponseDTO;
-import com.application.vehicleservicemanagement.dto.UserDTO;
+import com.application.vehicleservicemanagement.dto.ApiResponse;
+import com.application.vehicleservicemanagement.dto.UserDto;
 
 import java.util.List;
 
 public interface UserService {
-    UserDTO getUserById(Long id);
+    UserDto getUserById(Long id);
 
-    List<UserDTO> getAllUsers();
+    List<UserDto> getAllUsers();
 
-    List<UserDTO> getAllServiceAdvisors();
+    List<UserDto> getAllServiceAdvisors();
 
-    ApiResponseDTO updateUserById(Long id, UserDTO userDTO);
+    ApiResponse updateUserById(Long id, UserDto userDTO);
 
-    ApiResponseDTO deleteUserById(Long id);
+    ApiResponse deleteUserById(Long id);
 }

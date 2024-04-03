@@ -1,7 +1,7 @@
 package com.application.vehicleservicemanagement.service.implementation;
 
-import com.application.vehicleservicemanagement.dto.ApiResponseDTO;
-import com.application.vehicleservicemanagement.dto.ItemDTO;
+import com.application.vehicleservicemanagement.dto.ApiResponse;
+import com.application.vehicleservicemanagement.dto.ItemDto;
 import com.application.vehicleservicemanagement.entity.Item;
 import com.application.vehicleservicemanagement.exception.ResourceNotFoundException;
 import com.application.vehicleservicemanagement.repository.ItemRepository;
@@ -19,62 +19,62 @@ public class ItemServiceImplementation implements ItemService {
     private final ModelMapper modelMapper;
 
     @Override
-    public ApiResponseDTO add(ItemDTO itemDTO) {
+    public ApiResponse add(ItemDto itemDTO) {
         Item item = Item.builder()
                 .name(itemDTO.getName())
                 .price(itemDTO.getPrice())
                 .build();
         itemRepository.save(item);
-        return ApiResponseDTO.builder().message("Item added successfully.").status("Success").build();
+        return ApiResponse.builder().message("Item added successfully.").status("Success").build();
     }
 
     @Override
-    public ItemDTO getById(Long itemId) {
+    public ItemDto getById(Long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new ResourceNotFoundException("Item", "itemId", itemId.toString()));
-        return modelMapper.map(item, ItemDTO.class);
+        return modelMapper.map(item, ItemDto.class);
     }
 
     @Override
-    public ItemDTO getByName(String name) {
+    public ItemDto getByName(String name) {
         Item item = itemRepository.findByNameIgnoreCase(name).orElseThrow(() -> new ResourceNotFoundException("Item", "name", name));
-        return modelMapper.map(item, ItemDTO.class);
+        return modelMapper.map(item, ItemDto.class);
     }
 
     @Override
-    public List<ItemDTO> getAllItems() {
+    public List<ItemDto> getAllItems() {
         List<Item> items = itemRepository.findAll();
-        return items.stream().map(item -> modelMapper.map(item, ItemDTO.class)).toList();
+        return items.stream().map(item -> modelMapper.map(item, ItemDto.class)).toList();
     }
 
     @Override
-    public ApiResponseDTO updateById(Long itemId, ItemDTO itemDTO) {
+    public ApiResponse updateById(Long itemId, ItemDto itemDTO) {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new ResourceNotFoundException("Item", "itemId", itemId.toString()));
         item.setName(itemDTO.getName());
         item.setPrice(itemDTO.getPrice());
         itemRepository.save(item);
-        return ApiResponseDTO.builder().message("Item updated successfully.").status("Success").build();
+        return ApiResponse.builder().message("Item updated successfully.").status("Success").build();
     }
 
     @Override
-    public ApiResponseDTO updateByName(String name, ItemDTO itemDTO) {
+    public ApiResponse updateByName(String name, ItemDto itemDTO) {
         Item item = itemRepository.findByNameIgnoreCase(name).orElseThrow(() -> new ResourceNotFoundException("Item", "name", name));
         item.setName(itemDTO.getName());
         item.setPrice(itemDTO.getPrice());
         itemRepository.save(item);
-        return ApiResponseDTO.builder().message("Item updated successfully.").status("Success").build();
+        return ApiResponse.builder().message("Item updated successfully.").status("Success").build();
     }
 
     @Override
-    public ApiResponseDTO deleteById(Long itemId) {
+    public ApiResponse deleteById(Long itemId) {
         itemRepository.findById(itemId).orElseThrow(() -> new ResourceNotFoundException("Item", "itemId", itemId.toString()));
         itemRepository.deleteById(itemId);
-        return ApiResponseDTO.builder().message("Item deleted successfully.").status("Success").build();
+        return ApiResponse.builder().message("Item deleted successfully.").status("Success").build();
     }
 
     @Override
-    public ApiResponseDTO deleteByName(String name) {
+    public ApiResponse deleteByName(String name) {
         itemRepository.findByNameIgnoreCase(name).orElseThrow(() -> new ResourceNotFoundException("Item", "name", name));
         itemRepository.deleteByName(name);
-        return ApiResponseDTO.builder().message("Item deleted successfully.").status("Success").build();
+        return ApiResponse.builder().message("Item deleted successfully.").status("Success").build();
     }
 }

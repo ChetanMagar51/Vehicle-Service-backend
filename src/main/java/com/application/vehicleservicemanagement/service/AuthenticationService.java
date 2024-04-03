@@ -3,9 +3,9 @@ package com.application.vehicleservicemanagement.service;
 import com.application.vehicleservicemanagement.dto.*;
 
 public interface AuthenticationService {
-    ApiResponseDTO register(RegisterRequestDTO registerRequestDTO);
+    ApiResponse register(RegisterRequest registerRequest);
 
-    AuthenticationResponseDTO authenticate(AuthenticationRequestDTO authenticationRequestDTO);
+    AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest);
 
-    UserDTO getCurrentUser();
+    UserDto getCurrentUser();
 }
