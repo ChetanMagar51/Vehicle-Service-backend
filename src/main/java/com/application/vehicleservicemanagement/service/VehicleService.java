@@ -6,7 +6,7 @@ import com.application.vehicleservicemanagement.dto.VehicleDto;
 import java.util.List;
 
 public interface VehicleService {
-    ApiResponse registerVehicle(VehicleDto vehicleDTO);
+    ApiResponse registerVehicle(Long ownerId, VehicleDto vehicleDTO);
 
     VehicleDto getVehicleById(Long vehicleId);
 

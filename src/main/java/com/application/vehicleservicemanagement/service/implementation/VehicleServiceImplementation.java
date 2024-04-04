@@ -5,6 +5,7 @@ import com.application.vehicleservicemanagement.dto.VehicleDto;
 import com.application.vehicleservicemanagement.entity.*;
 import com.application.vehicleservicemanagement.exception.ResourceNotFoundException;
 import com.application.vehicleservicemanagement.repository.ItemRepository;
+import com.application.vehicleservicemanagement.repository.OwnerRepository;
 import com.application.vehicleservicemanagement.repository.UserRepository;
 import com.application.vehicleservicemanagement.repository.VehicleRepository;
 import com.application.vehicleservicemanagement.service.VehicleService;
@@ -20,16 +21,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class VehicleServiceImplementation implements VehicleService {
     private final VehicleRepository vehicleRepository;
+    private final OwnerRepository ownerRepository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
     private final ModelMapper modelMapper;
 
     @Override
-    public ApiResponse registerVehicle(VehicleDto vehicleDTO) {
+    public ApiResponse registerVehicle(Long ownerId, VehicleDto vehicleDto) {
+        Owner owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner", "id", ownerId.toString()));
         Vehicle vehicle = Vehicle.builder()
-                .vehicleNumber(vehicleDTO.getVehicleNumber())
-                .vehicleModel(vehicleDTO.getVehicleModel())
-                .vehicleDescription(vehicleDTO.getVehicleDescription())
+                .vehicleNumber(vehicleDto.getVehicleNumber())
+                .vehicleModel(vehicleDto.getVehicleModel())
+                .vehicleDescription(vehicleDto.getVehicleDescription())
+                .owner(owner)
                 .serviceStatus(ServiceStatus.DUE)
                 .build();
         vehicleRepository.save(vehicle);

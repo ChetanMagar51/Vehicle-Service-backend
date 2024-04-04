@@ -29,7 +29,7 @@ public class Owner {
     private String email;
     
     @Column(nullable = false, unique = true)
-    private String contact;
+    private String phone;
 
     @Column(nullable = false)
     private String address;
