@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/service")
 @RequiredArgsConstructor
-public class VehicleServiceStatusController {
+public class ServiceStatusController {
     private final VehicleService vehicleService;
 
     @PostMapping("/schedule")
