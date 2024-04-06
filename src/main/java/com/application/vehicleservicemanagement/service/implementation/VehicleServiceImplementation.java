@@ -8,12 +8,13 @@ import com.application.vehicleservicemanagement.repository.ItemRepository;
 import com.application.vehicleservicemanagement.repository.OwnerRepository;
 import com.application.vehicleservicemanagement.repository.UserRepository;
 import com.application.vehicleservicemanagement.repository.VehicleRepository;
+import com.application.vehicleservicemanagement.service.AdvisorService;
 import com.application.vehicleservicemanagement.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +25,7 @@ public class VehicleServiceImplementation implements VehicleService {
     private final OwnerRepository ownerRepository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
+    private final AdvisorService advisorService;
     private final ModelMapper modelMapper;
 
     @Override
@@ -85,12 +87,14 @@ public class VehicleServiceImplementation implements VehicleService {
     @Override
     public ApiResponse scheduleVehicleForService(String vehicleNumber, Long serviceAdvisorId) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
-        User user = userRepository.findByRoleAndId(Role.SERVICE_ADVISOR, serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("Service Advisor", "id", serviceAdvisorId.toString()));
-        if (!(vehicle.getServiceStatus() == ServiceStatus.DUE)) {
+        User serviceAdvisor = userRepository.findByRoleAndId(Role.SERVICE_ADVISOR, serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("Service Advisor", "id", serviceAdvisorId.toString()));
+        if (!(vehicle.getServiceStatus() == ServiceStatus.DUE) || !advisorService.updateAdvisorStatus(serviceAdvisor)) {
             return ApiResponse.builder().message("Failed to process the request!! Try again.").status("Failed").build();
         }
-        vehicle.setServiceAdvisor(user);
+        vehicle.setServiceAdvisor(serviceAdvisor);
         vehicle.setServiceStatus(ServiceStatus.SCHEDULED);
+        vehicle.setQueueNumber(serviceAdvisor.getScheduledVehicleCount());
+        vehicle.setDeliveryTime(getExpectedDeliveryTime(vehicle.getQueueNumber()));
         vehicleRepository.save(vehicle);
         return ApiResponse.builder().message("Vehicle scheduled successfully.").status("Success").build();
     }
@@ -118,7 +122,7 @@ public class VehicleServiceImplementation implements VehicleService {
                 .serviceAdvisor(vehicle.getServiceAdvisor())
                 .itemList(itemList.stream().map(item -> modelMapper.map(item, Item.class)).toList())
                 .amount(itemList.stream().mapToDouble(item -> item.get().getPrice()).sum())
-                .date(new Date())
+                .date(LocalDateTime.now())
                 .isAdminApproved(false)
                 .isPaymentCompleted(false)
                 .build();
@@ -126,5 +130,10 @@ public class VehicleServiceImplementation implements VehicleService {
         vehicle.setServiceStatus(ServiceStatus.SERVICED);
         vehicleRepository.save(vehicle);
         return ApiResponse.builder().message("Vehicle service completed.").status("Success").build();
+    }
+
+    private LocalDateTime getExpectedDeliveryTime(Integer queueNumber) {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        return localDateTime.plusHours(queueNumber * 2);
     }
 }

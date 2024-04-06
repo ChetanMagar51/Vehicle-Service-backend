@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -23,7 +23,7 @@ public class ServiceRecord {
     private Long id;
 
     @DateTimeFormat
-    private Date date;
+    private LocalDateTime date;
 
     private Integer quantity;
 

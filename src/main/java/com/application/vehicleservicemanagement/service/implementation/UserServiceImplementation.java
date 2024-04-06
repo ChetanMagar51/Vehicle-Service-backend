@@ -1,6 +1,7 @@
 package com.application.vehicleservicemanagement.service.implementation;
 
 import com.application.vehicleservicemanagement.dto.ApiResponse;
+import com.application.vehicleservicemanagement.dto.RegisterRequest;
 import com.application.vehicleservicemanagement.dto.UserDto;
 import com.application.vehicleservicemanagement.entity.Role;
 import com.application.vehicleservicemanagement.entity.User;
@@ -9,6 +10,7 @@ import com.application.vehicleservicemanagement.repository.UserRepository;
 import com.application.vehicleservicemanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -18,7 +20,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+
+    @Override
+    public ApiResponse createUser(RegisterRequest registerRequest) {
+        User user = User.builder()
+                .firstName(registerRequest.getFirstName())
+                .lastName(registerRequest.getLastName())
+                .phone(registerRequest.getPhone())
+                .address(registerRequest.getAddress())
+                .email(registerRequest.getEmail())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .role(Role.SERVICE_ADVISOR)
+                .build();
+        userRepository.save(user);
+        return ApiResponse.builder()
+                .message("User registered successfully !!")
+                .status("Success")
+                .build();
+    }
 
     @Override
     public UserDto getUserById(Long id) {

@@ -19,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class ApplicationConfiguration {
     private final UserRepository userRepository;
 
+    public static final Integer MAX_SCHEDULED_VEHICLE_COUNT = 5;
+
     @Bean
     public UserDetailsService userDetailsService() {
         return userEmail -> userRepository.findByEmail(userEmail)

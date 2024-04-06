@@ -6,6 +6,7 @@ import com.application.vehicleservicemanagement.entity.User;
 import com.application.vehicleservicemanagement.exception.ResourceNotFoundException;
 import com.application.vehicleservicemanagement.repository.UserRepository;
 import com.application.vehicleservicemanagement.service.AuthenticationService;
+import com.application.vehicleservicemanagement.service.UserService;
 import com.application.vehicleservicemanagement.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImplementation implements AuthenticationService {
+    private final UserService userService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -27,20 +29,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
 
     @Override
     public ApiResponse register(RegisterRequest registerRequest) {
-        User user = User.builder()
-                .firstName(registerRequest.getFirstName())
-                .lastName(registerRequest.getLastName())
-                .phone(registerRequest.getPhone())
-                .address(registerRequest.getAddress())
-                .email(registerRequest.getEmail())
-                .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .role(Role.SERVICE_ADVISOR)
-                .build();
-        userRepository.save(user);
-        return ApiResponse.builder()
-                .message("User registered successfully !!")
-                .status("Success")
-                .build();
+        return userService.createUser(registerRequest);
     }
 
     @Override

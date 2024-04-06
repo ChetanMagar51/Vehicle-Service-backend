@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -23,6 +26,11 @@ public class Vehicle {
     private String vehicleModel;
 
     private String vehicleDescription;
+
+    private Integer queueNumber;
+
+    @DateTimeFormat
+    private LocalDateTime deliveryTime;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
