@@ -32,6 +32,8 @@ public class UserServiceImplementation implements UserService {
                 .address(registerRequest.getAddress())
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .scheduledVehicleCount(0)
+                .isAvailable(Boolean.FALSE)
                 .role(Role.SERVICE_ADVISOR)
                 .build();
         userRepository.save(user);
