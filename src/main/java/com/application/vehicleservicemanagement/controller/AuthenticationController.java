@@ -1,16 +1,10 @@
 package com.application.vehicleservicemanagement.controller;
 
-import com.application.vehicleservicemanagement.dto.ApiResponse;
-import com.application.vehicleservicemanagement.dto.AuthenticationRequest;
-import com.application.vehicleservicemanagement.dto.AuthenticationResponse;
-import com.application.vehicleservicemanagement.dto.RegisterRequest;
+import com.application.vehicleservicemanagement.dto.*;
 import com.application.vehicleservicemanagement.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -26,5 +20,10 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
         return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
+    }
+
+    @GetMapping("/get-current-user")
+    public ResponseEntity<UserDto> getCurrentUser() {
+        return ResponseEntity.ok(authenticationService.getCurrentUser());
     }
 }
