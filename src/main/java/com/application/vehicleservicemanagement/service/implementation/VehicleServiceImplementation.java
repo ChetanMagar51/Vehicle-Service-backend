@@ -29,8 +29,8 @@ public class VehicleServiceImplementation implements VehicleService {
     private final ModelMapper modelMapper;
 
     @Override
-    public ApiResponse registerVehicle(Long ownerId, VehicleDto vehicleDto) {
-        Owner owner = ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException("Owner", "id", ownerId.toString()));
+    public ApiResponse registerVehicle(VehicleDto vehicleDto) {
+        Owner owner = ownerRepository.findById(vehicleDto.getOwnerId()).orElseThrow(() -> new ResourceNotFoundException("Owner", "id", vehicleDto.getOwnerId().toString()));
         Vehicle vehicle = Vehicle.builder()
                 .vehicleNumber(vehicleDto.getVehicleNumber())
                 .vehicleModel(vehicleDto.getVehicleModel())
@@ -122,7 +122,7 @@ public class VehicleServiceImplementation implements VehicleService {
                 .serviceAdvisor(vehicle.getServiceAdvisor())
                 .itemList(itemList.stream().map(item -> modelMapper.map(item, Item.class)).toList())
                 .amount(itemList.stream().mapToDouble(item -> item.get().getPrice()).sum())
-                .date(LocalDateTime.now())
+                .date(LocalDateTime.now().plusHours(6))
                 .isAdminApproved(false)
                 .isPaymentCompleted(false)
                 .build();
@@ -134,6 +134,6 @@ public class VehicleServiceImplementation implements VehicleService {
 
     private LocalDateTime getExpectedDeliveryTime(Integer queueNumber) {
         LocalDateTime localDateTime = LocalDateTime.now();
-        return localDateTime.plusHours(queueNumber * 2);
+        return localDateTime.plusHours(6 + (queueNumber * 2));
     }
 }

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VehicleDto {
     private Long id;
+    private Long ownerId;
     private String vehicleNumber;
     private String vehicleModel;
     private String vehicleDescription;
