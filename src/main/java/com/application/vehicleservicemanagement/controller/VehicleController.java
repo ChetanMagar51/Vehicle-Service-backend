@@ -17,7 +17,7 @@ public class VehicleController {
     private final VehicleService vehicleService;
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse> registerVehicle(@RequestBody Long ownerId, @RequestBody VehicleDto vehicleDTO) {
+    public ResponseEntity<ApiResponse> registerVehicle(@RequestParam(value = "ownerId") Long ownerId, @RequestBody VehicleDto vehicleDTO) {
         return ResponseEntity.ok(vehicleService.registerVehicle(ownerId, vehicleDTO));
     }
 
