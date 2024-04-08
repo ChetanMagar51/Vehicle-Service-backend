@@ -43,45 +43,38 @@ public class VehicleServiceImplementation implements VehicleService {
     }
 
     @Override
-    public VehicleDto getVehicleById(Long vehicleId) {
-        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleId", vehicleId.toString()));
-        return modelMapper.map(vehicle, VehicleDto.class);
+    public Vehicle getVehicleById(Long vehicleId) {
+        return vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleId", vehicleId.toString()));
     }
 
     @Override
-    public VehicleDto getVehicleByVehicleNumber(String vehicleNumber) {
-        Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
-        return modelMapper.map(vehicle, VehicleDto.class);
+    public Vehicle getVehicleByVehicleNumber(String vehicleNumber) {
+        return vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
     }
 
     @Override
-    public List<VehicleDto> getAllVehicles() {
-        List<Vehicle> vehicleList = vehicleRepository.findAll();
-        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDto.class)).toList();
+    public List<Vehicle> getAllVehicles() {
+        return vehicleRepository.findAll();
     }
 
     @Override
-    public List<VehicleDto> getAllDueVehicles() {
-        List<Vehicle> vehicleList = vehicleRepository.findAllByServiceStatus(ServiceStatus.DUE);
-        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDto.class)).toList();
+    public List<Vehicle> getAllDueVehicles() {
+        return vehicleRepository.findAllByServiceStatus(ServiceStatus.DUE);
     }
 
     @Override
-    public List<VehicleDto> getAllScheduledVehicles() {
-        List<Vehicle> vehicleList = vehicleRepository.findAllByServiceStatus(ServiceStatus.SCHEDULED);
-        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDto.class)).toList();
+    public List<Vehicle> getAllScheduledVehicles() {
+        return vehicleRepository.findAllByServiceStatus(ServiceStatus.SCHEDULED);
     }
 
     @Override
-    public List<VehicleDto> getAllVehiclesUnderServicing() {
-        List<Vehicle> vehicleList = vehicleRepository.findAllByServiceStatus(ServiceStatus.UNDER_SERVICING);
-        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDto.class)).toList();
+    public List<Vehicle> getAllVehiclesUnderServicing() {
+        return vehicleRepository.findAllByServiceStatus(ServiceStatus.UNDER_SERVICING);
     }
 
     @Override
-    public List<VehicleDto> getAllServicedVehicles() {
-        List<Vehicle> vehicleList = vehicleRepository.findAllByServiceStatus(ServiceStatus.SERVICED);
-        return vehicleList.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDto.class)).toList();
+    public List<Vehicle> getAllServicedVehicles() {
+        return vehicleRepository.findAllByServiceStatus(ServiceStatus.SERVICED);
     }
 
     @Override

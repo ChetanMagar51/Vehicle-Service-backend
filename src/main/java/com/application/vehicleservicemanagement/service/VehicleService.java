@@ -2,25 +2,26 @@ package com.application.vehicleservicemanagement.service;
 
 import com.application.vehicleservicemanagement.dto.ApiResponse;
 import com.application.vehicleservicemanagement.dto.VehicleDto;
+import com.application.vehicleservicemanagement.entity.Vehicle;
 
 import java.util.List;
 
 public interface VehicleService {
     ApiResponse registerVehicle(VehicleDto vehicleDTO);
 
-    VehicleDto getVehicleById(Long vehicleId);
+    Vehicle getVehicleById(Long vehicleId);
 
-    VehicleDto getVehicleByVehicleNumber(String vehicleNumber);
+    Vehicle getVehicleByVehicleNumber(String vehicleNumber);
 
-    List<VehicleDto> getAllVehicles();
+    List<Vehicle> getAllVehicles();
 
-    List<VehicleDto> getAllDueVehicles();
+    List<Vehicle> getAllDueVehicles();
 
-    List<VehicleDto> getAllScheduledVehicles();
+    List<Vehicle> getAllScheduledVehicles();
 
-    List<VehicleDto> getAllVehiclesUnderServicing();
+    List<Vehicle> getAllVehiclesUnderServicing();
 
-    List<VehicleDto> getAllServicedVehicles();
+    List<Vehicle> getAllServicedVehicles();
 
     ApiResponse scheduleVehicleForService(String vehicleNumber, Long serviceAdvisorId);
 
