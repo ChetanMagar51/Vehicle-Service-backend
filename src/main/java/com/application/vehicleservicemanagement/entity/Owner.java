@@ -1,5 +1,6 @@
 package com.application.vehicleservicemanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,5 +36,6 @@ public class Owner {
     private String address;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Vehicle> vehicleList;
 }

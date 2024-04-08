@@ -2,6 +2,7 @@ package com.application.vehicleservicemanagement.controller;
 
 import com.application.vehicleservicemanagement.dto.ApiResponse;
 import com.application.vehicleservicemanagement.dto.VehicleDto;
+import com.application.vehicleservicemanagement.dto.VehicleResponse;
 import com.application.vehicleservicemanagement.entity.Vehicle;
 import com.application.vehicleservicemanagement.service.VehicleService;
 import lombok.RequiredArgsConstructor;
@@ -23,32 +24,32 @@ public class VehicleController {
     }
 
     @PostMapping("/get")
-    public ResponseEntity<Vehicle> getVehicleByVehicleNumber(@RequestParam(value = "vehicleNumber") String vehicleNumber) {
+    public ResponseEntity<VehicleResponse> getVehicleByVehicleNumber(@RequestParam(value = "vehicleNumber") String vehicleNumber) {
         return ResponseEntity.ok(vehicleService.getVehicleByVehicleNumber(vehicleNumber));
     }
 
     @GetMapping("/get/all")
-    public ResponseEntity<List<Vehicle>> getAllVehicles() {
+    public ResponseEntity<List<VehicleResponse>> getAllVehicles() {
         return ResponseEntity.ok(vehicleService.getAllVehicles());
     }
 
     @GetMapping("/get/all/due")
-    public ResponseEntity<List<Vehicle>> getAllDueVehicles() {
+    public ResponseEntity<List<VehicleResponse>> getAllDueVehicles() {
         return ResponseEntity.ok(vehicleService.getAllDueVehicles());
     }
 
     @GetMapping("/get/all/scheduled")
-    public ResponseEntity<List<Vehicle>> getAllScheduledVehicles() {
+    public ResponseEntity<List<VehicleResponse>> getAllScheduledVehicles() {
         return ResponseEntity.ok(vehicleService.getAllScheduledVehicles());
     }
 
     @GetMapping("/get/all/underServicing")
-    public ResponseEntity<List<Vehicle>> getAllVehiclesUnderServicing() {
+    public ResponseEntity<List<VehicleResponse>> getAllVehiclesUnderServicing() {
         return ResponseEntity.ok(vehicleService.getAllVehiclesUnderServicing());
     }
 
     @GetMapping("/get/all/serviced")
-    public ResponseEntity<List<Vehicle>> getAllServicedVehicles() {
+    public ResponseEntity<List<VehicleResponse>> getAllServicedVehicles() {
         return ResponseEntity.ok(vehicleService.getAllServicedVehicles());
     }
 }
