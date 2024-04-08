@@ -3,6 +3,7 @@ package com.application.vehicleservicemanagement.service.implementation;
 import com.application.vehicleservicemanagement.dto.*;
 import com.application.vehicleservicemanagement.entity.Role;
 import com.application.vehicleservicemanagement.entity.User;
+import com.application.vehicleservicemanagement.exception.CommonException;
 import com.application.vehicleservicemanagement.exception.ResourceNotFoundException;
 import com.application.vehicleservicemanagement.repository.UserRepository;
 import com.application.vehicleservicemanagement.service.AuthenticationService;
@@ -14,6 +15,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -34,10 +38,21 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
 
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
-        user = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User", "userEmail", authenticationRequest.getEmail()));
+        String reqEmail = authenticationRequest.getEmail();
+        String reqPassword = authenticationRequest.getPassword();
+        User temp = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User", "userEmail", reqEmail));
+        if (!(Objects.equals(authenticationRequest.getType(), temp.getRole().name()))) {
+            throw new CommonException("Access requested by invalid Role !! Try again.");
+        }
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(reqEmail, reqPassword));
+        user = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User", "userEmail", reqEmail));
         String jwtToken = jwtUtil.generateToken(user);
-        return AuthenticationResponse.builder().token(jwtToken).build();
+        return AuthenticationResponse.builder()
+                .status("Success")
+                .token(jwtToken)
+                .issuedAt(LocalDateTime.now())
+                .expiration(jwtUtil.extractExpiration(jwtToken))
+                .build();
     }
 
     @Override

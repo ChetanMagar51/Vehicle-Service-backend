@@ -15,4 +15,12 @@ public class GlobalExceptionHandler {
                 .status("Unsuccessful")
                 .build(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(CommonException.class)
+    public ResponseEntity<ApiResponse> commonExceptionHandler(CommonException exception) {
+        return new ResponseEntity<>(ApiResponse.builder()
+                .message(exception.getMessage())
+                .status("Unsuccessful")
+                .build(), HttpStatus.EXPECTATION_FAILED);
+    };
 }
