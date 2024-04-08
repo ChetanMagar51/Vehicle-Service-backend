@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse> resourceNotFoundExceptionHandler(ResourceNotFoundException e) {
         return new ResponseEntity<>(ApiResponse.builder()
                 .message(e.getMessage())
-                .status("Unsuccessful")
+                .status(HttpStatus.NOT_FOUND.name())
                 .build(), HttpStatus.NOT_FOUND);
     }
 
@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse> commonExceptionHandler(CommonException e) {
         return new ResponseEntity<>(ApiResponse.builder()
                 .message(e.getMessage())
-                .status("Unsuccessful")
+                .status(HttpStatus.EXPECTATION_FAILED.name())
                 .build(), HttpStatus.EXPECTATION_FAILED);
     }
 
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse> badCredentialsExceptionHandler(BadCredentialsException e) {
         return new ResponseEntity<>(ApiResponse.builder()
                 .message(e.getMessage())
-                .status("Unsuccessful")
+                .status(HttpStatus.UNAUTHORIZED.name())
                 .build(), HttpStatus.UNAUTHORIZED);
     }
 }
