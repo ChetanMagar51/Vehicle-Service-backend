@@ -35,12 +35,12 @@ public class ItemController {
         return ResponseEntity.ok(itemService.getAllItems());
     }
 
-    @PostMapping("/update/id")
+    @PutMapping("/update/id")
     public ResponseEntity<ApiResponse> updateItemById(@RequestParam(value = "id") Long id, @RequestBody ItemDto itemDTO) {
         return ResponseEntity.ok(itemService.updateById(id, itemDTO));
     }
 
-    @PostMapping("/update/name")
+    @PutMapping("/update/name")
     public ResponseEntity<ApiResponse> updateItemByName(@RequestParam(value = "name") String name, @RequestBody ItemDto itemDTO) {
         return ResponseEntity.ok(itemService.updateByName(name, itemDTO));
     }

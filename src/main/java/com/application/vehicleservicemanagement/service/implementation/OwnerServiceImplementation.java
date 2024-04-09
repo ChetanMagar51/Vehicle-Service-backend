@@ -63,4 +63,26 @@ public class OwnerServiceImplementation implements OwnerService {
         List<Vehicle> vehicles = owner.getVehicleList();
         return vehicles.stream().map(vehicle -> modelMapper.map(vehicle, VehicleDto.class)).toList();
     }
+
+    @Override
+    public ApiResponse updateOwnerById(Long id, UserDto userDto) {
+        Owner owner = ownerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Owner", "id", id.toString()));
+        return updateOwner(userDto, owner);
+    }
+
+    @Override
+    public ApiResponse updateOwnerByPhone(String phone, UserDto userDto) {
+        Owner owner = ownerRepository.findByPhone(phone).orElseThrow(() -> new ResourceNotFoundException("Owner", "phone", phone));
+        return updateOwner(userDto, owner);
+    }
+
+    private ApiResponse updateOwner(UserDto userDto, Owner owner) {
+        owner.setFirstName(userDto.getFirstName());
+        owner.setLastName(userDto.getLastName());
+        owner.setPhone(userDto.getPhone());
+        owner.setAddress(userDto.getAddress());
+        owner.setEmail(userDto.getEmail());
+        ownerRepository.save(owner);
+        return ApiResponse.builder().message("Owner updated successfully.").status("Success").build();
+    }
 }

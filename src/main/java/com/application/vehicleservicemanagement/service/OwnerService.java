@@ -18,4 +18,8 @@ public interface OwnerService {
     List<UserDto> getAllOwners();
 
     List<VehicleDto> getAllVehiclesOfOwner(Long id);
+
+    ApiResponse updateOwnerById(Long id, UserDto userDto);
+
+    ApiResponse updateOwnerByPhone(String phone, UserDto userDto);
 }
