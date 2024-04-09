@@ -6,6 +6,7 @@ import com.application.vehicleservicemanagement.dto.VehicleResponse;
 import com.application.vehicleservicemanagement.entity.Vehicle;
 import com.application.vehicleservicemanagement.service.VehicleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +21,12 @@ public class VehicleController {
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse> registerVehicle(@RequestBody VehicleDto vehicleDTO) {
-        return ResponseEntity.ok(vehicleService.registerVehicle(vehicleDTO));
+        return new ResponseEntity<>(vehicleService.registerVehicle(vehicleDTO), HttpStatus.CREATED);
     }
 
-    @PostMapping("/get")
+    @GetMapping("/get")
     public ResponseEntity<VehicleResponse> getVehicleByVehicleNumber(@RequestParam(value = "vehicleNumber") String vehicleNumber) {
-        return ResponseEntity.ok(vehicleService.getVehicleByVehicleNumber(vehicleNumber));
+        return new ResponseEntity<>(vehicleService.getVehicleByVehicleNumber(vehicleNumber), HttpStatus.FOUND);
     }
 
     @GetMapping("/get/all")

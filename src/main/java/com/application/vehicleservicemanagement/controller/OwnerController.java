@@ -45,11 +45,11 @@ public class OwnerController {
 
     @PutMapping("/{id}/update")
     public ResponseEntity<ApiResponse> updateOwnerById(@PathVariable Long id, @RequestBody UserDto userDto) {
-        return new ResponseEntity<>(ownerService.updateOwnerById(id, userDto), HttpStatusCode.valueOf(204));
+        return new ResponseEntity<>(ownerService.updateOwnerById(id, userDto), HttpStatus.OK);
     }
 
     @PutMapping("/update")
     public ResponseEntity<ApiResponse> updateOwnerByPhone(@RequestParam String phone, @RequestBody UserDto userDto) {
-        return new ResponseEntity<>(ownerService.updateOwnerByPhone(phone, userDto), HttpStatusCode.valueOf(204));
+        return new ResponseEntity<>(ownerService.updateOwnerByPhone(phone, userDto), HttpStatus.OK);
     }
 }

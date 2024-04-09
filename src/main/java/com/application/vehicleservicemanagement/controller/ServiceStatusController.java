@@ -3,6 +3,7 @@ package com.application.vehicleservicemanagement.controller;
 import com.application.vehicleservicemanagement.dto.ApiResponse;
 import com.application.vehicleservicemanagement.service.VehicleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +17,12 @@ public class ServiceStatusController {
 
     @PostMapping("/schedule")
     public ResponseEntity<ApiResponse> scheduleVehicleForService(@RequestParam(value = "vehicleNumber") String vehicleNumber, @RequestParam(value = "serviceAdvisorId") Long serviceAdvisorId) {
-        return ResponseEntity.ok(vehicleService.scheduleVehicleForService(vehicleNumber, serviceAdvisorId));
+        return new ResponseEntity<>(vehicleService.scheduleVehicleForService(vehicleNumber, serviceAdvisorId), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/startService")
     public ResponseEntity<ApiResponse> startVehicleService(@RequestParam(value = "vehicleNumber") String vehicleNumber) {
-        return ResponseEntity.ok(vehicleService.startVehicleService(vehicleNumber));
+        return new ResponseEntity<>(vehicleService.startVehicleService(vehicleNumber), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/completeService")

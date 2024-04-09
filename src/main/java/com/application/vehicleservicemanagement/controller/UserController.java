@@ -4,6 +4,7 @@ import com.application.vehicleservicemanagement.dto.ApiResponse;
 import com.application.vehicleservicemanagement.dto.UserDto;
 import com.application.vehicleservicemanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class UserController {
 
     @GetMapping("/get")
     public ResponseEntity<UserDto> getUser(@RequestParam(value = "id") Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.FOUND);
     }
 
     @GetMapping("/get/all")
@@ -32,11 +33,11 @@ public class UserController {
 
     @PatchMapping("/update")
     public ResponseEntity<ApiResponse> updateUserById(@RequestParam(value = "id") Long id, @RequestBody UserDto userDTO) {
-        return ResponseEntity.ok(userService.updateUserById(id, userDTO));
+        return new ResponseEntity<>(userService.updateUserById(id, userDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<ApiResponse> deleteUser(@RequestParam(value = "id") Long id) {
-        return ResponseEntity.ok(userService.deleteUserById(id));
+        return new ResponseEntity<>(userService.deleteUserById(id), HttpStatus.OK);
     }
 }
