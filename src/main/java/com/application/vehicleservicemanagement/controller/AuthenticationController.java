@@ -1,17 +1,22 @@
 package com.application.vehicleservicemanagement.controller;
 
 import com.application.vehicleservicemanagement.dto.*;
+import com.application.vehicleservicemanagement.entity.User;
 import com.application.vehicleservicemanagement.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    private final UserDetailsService userDetailsService;
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse> register(@RequestBody RegisterRequest registerRequest) {
@@ -24,7 +29,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/get-current-user")
-    public ResponseEntity<UserDto> getCurrentUser() {
-        return ResponseEntity.ok(authenticationService.getCurrentUser());
+    public ResponseEntity<User> getCurrentUser(Principal principal) {
+        return ResponseEntity.ok((User) userDetailsService.loadUserByUsername(principal.getName()));
     }
 }
