@@ -6,7 +6,6 @@ import com.application.vehicleservicemanagement.dto.VehicleDto;
 import com.application.vehicleservicemanagement.service.OwnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
