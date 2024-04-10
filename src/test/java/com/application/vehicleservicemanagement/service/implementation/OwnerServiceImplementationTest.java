@@ -50,6 +50,7 @@ public class OwnerServiceImplementationTest {
         owner.setEmail(userDto.getEmail());
         owner.setPhone(userDto.getPhone());
         owner.setAddress(userDto.getAddress());
+
         when(ownerRepository.save(owner)).thenReturn(owner);
         when(modelMapper.map(any(UserDto.class), eq(Owner.class))).thenReturn(owner);
 
