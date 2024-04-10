@@ -2,23 +2,19 @@ package com.application.vehicleservicemanagement.controller;
 
 import com.application.vehicleservicemanagement.service.implementation.InvoiceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 
-@Controller
+@RestController
 @RequestMapping("/invoice")
 @RequiredArgsConstructor
 public class InvoiceController {
-
-    @Autowired
-    private InvoiceService invoiceService;
+    private final InvoiceService invoiceService;
 
     @GetMapping("/generate")
     public ResponseEntity<InputStreamResource> createInvoice(@RequestParam(value = "vehicleId") Long id) {
