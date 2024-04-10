@@ -119,8 +119,8 @@ public class VehicleServiceImplementation implements VehicleService {
                 .itemList(itemList.stream().map(item -> modelMapper.map(item, Item.class)).toList())
                 .amount(itemList.stream().mapToDouble(item -> item.get().getPrice()).sum())
                 .date(LocalDateTime.now().plusHours(6))
-                .isAdminApproved(false)
-                .isPaymentCompleted(false)
+                .isAdminApproved(Boolean.FALSE)
+                .isPaymentCompleted(Boolean.FALSE)
                 .build();
         vehicle.setServiceRecord(serviceRecord);
         vehicle.setServiceStatus(ServiceStatus.SERVICED);

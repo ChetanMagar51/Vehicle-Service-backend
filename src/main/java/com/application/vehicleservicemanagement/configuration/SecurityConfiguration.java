@@ -27,10 +27,10 @@ public class SecurityConfiguration {
               .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**", "/pdf/createInvoice", "/swagger-ui/**",
+                        .requestMatchers("/auth/**", "/swagger-ui/**",
                                 "/swagger-resources/**","/v3/api-docs/**").permitAll()
                         .requestMatchers("/service/**").hasAnyAuthority(Role.SERVICE_ADVISOR.name())
-                        .requestMatchers("/user/**", "/item", "/owner/**").hasAnyAuthority(Role.ADMIN.name())
+                        .requestMatchers("/user/**", "/item", "/owner/**", "/invoice/**").hasAnyAuthority(Role.ADMIN.name())
                         .requestMatchers("/vehicle/**").hasAnyAuthority(Role.ADMIN.name(), Role.SERVICE_ADVISOR.name())
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
