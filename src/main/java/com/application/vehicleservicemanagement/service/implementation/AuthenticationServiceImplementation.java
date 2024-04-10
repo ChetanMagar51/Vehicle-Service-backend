@@ -1,9 +1,8 @@
 package com.application.vehicleservicemanagement.service.implementation;
 
 import com.application.vehicleservicemanagement.dto.*;
-import com.application.vehicleservicemanagement.entity.Role;
 import com.application.vehicleservicemanagement.entity.User;
-import com.application.vehicleservicemanagement.exception.CommonException;
+import com.application.vehicleservicemanagement.exception.InvalidRoleException;
 import com.application.vehicleservicemanagement.exception.ResourceNotFoundException;
 import com.application.vehicleservicemanagement.repository.UserRepository;
 import com.application.vehicleservicemanagement.service.AuthenticationService;
@@ -14,8 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -43,7 +40,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
         String reqPassword = authenticationRequest.getPassword();
         User temp = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User", "userEmail", reqEmail));
         if (!(Objects.equals(authenticationRequest.getType(), temp.getRole().name()))) {
-            throw new CommonException("Access requested by invalid Role !! Try again.");
+            throw new InvalidRoleException(temp.getRole().name());
         }
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(reqEmail, reqPassword));

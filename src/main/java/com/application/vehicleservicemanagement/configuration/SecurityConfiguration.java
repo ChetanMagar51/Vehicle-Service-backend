@@ -29,9 +29,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**", "/swagger-ui/**",
                                 "/swagger-resources/**","/v3/api-docs/**").permitAll()
-                        .requestMatchers("/service/**").hasAnyAuthority(Role.SERVICE_ADVISOR.name())
                         .requestMatchers("/user/**", "/item", "/owner/**", "/invoice/**").hasAnyAuthority(Role.ADMIN.name())
-                        .requestMatchers("/vehicle/**").hasAnyAuthority(Role.ADMIN.name(), Role.SERVICE_ADVISOR.name())
+                        .requestMatchers("/vehicle/**", "/service/**").hasAnyAuthority(Role.ADMIN.name(), Role.SERVICE_ADVISOR.name())
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
