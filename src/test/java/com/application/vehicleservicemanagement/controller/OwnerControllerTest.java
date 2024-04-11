@@ -4,30 +4,23 @@ import com.application.vehicleservicemanagement.dto.ApiResponse;
 import com.application.vehicleservicemanagement.dto.UserDto;
 import com.application.vehicleservicemanagement.dto.VehicleDto;
 import com.application.vehicleservicemanagement.service.OwnerService;
-import com.application.vehicleservicemanagement.service.UserService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,7 +42,7 @@ public class OwnerControllerTest {
     }
 
     @Test
-    void addOwner() throws Exception {
+    void testAddOwner() throws Exception {
         UserDto userDto = new UserDto();
         userDto.setId(1L);
         userDto.setFirstName("John");
@@ -63,7 +56,7 @@ public class OwnerControllerTest {
     }
 
     @Test
-    void getOwnerById() throws Exception {
+    void testGetOwnerById() throws Exception {
         UserDto userDto = new UserDto();
         userDto.setId(1L);
         userDto.setFirstName("John");
@@ -80,7 +73,7 @@ public class OwnerControllerTest {
     }
 
     @Test
-    void getOwnerByPhone() throws Exception {
+    void testGetOwnerByPhone() throws Exception {
         UserDto userDto = new UserDto();
         userDto.setId(1L);
         userDto.setPhone("9876543210");
@@ -96,7 +89,7 @@ public class OwnerControllerTest {
     }
 
     @Test
-    void getAllOwners() throws Exception {
+    void testGetAllOwners() throws Exception {
         UserDto owner1 = new UserDto();
         owner1.setId(1L);
         owner1.setFirstName("John");
@@ -119,7 +112,7 @@ public class OwnerControllerTest {
     }
 
     @Test
-    void getAllVehiclesOfOwner() throws Exception {
+    void testGetAllVehiclesOfOwner() throws Exception {
         VehicleDto vehicle1=new VehicleDto();
         vehicle1.setId(1L);
         vehicle1.setVehicleModel("Toyota");
@@ -141,7 +134,7 @@ public class OwnerControllerTest {
     }
 
     @Test
-    void updateOwnerById() throws Exception {
+    void testUpdateOwnerById() throws Exception {
         UserDto owner = new UserDto();
         owner.setId(1L);
         owner.setFirstName("Mathew");
@@ -156,21 +149,23 @@ public class OwnerControllerTest {
     }
 
     @Test
-    void updateOwnerByPhone() throws Exception {
+    void testUpdateOwnerByPhone() throws Exception {
         UserDto owner = new UserDto();
         owner.setId(1L);
         owner.setPhone("1234567890");
 
-        when(ownerService.updateOwnerByPhone(eq("1234567890"), any(UserDto.class))).thenReturn(new ApiResponse("Owner updated successfully","OK"));
+        when(ownerService.updateOwnerByPhone(eq("1234567890"), any(UserDto.class)))
+                .thenReturn(new ApiResponse("Owner updated successfully", "OK"));
 
         mockMvc.perform(MockMvcRequestBuilders.put("/owner/update")
                         .param("phone", "1234567890")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\": 1, \"firstName\": \"UpdatedName\"}"))
-                .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isOk());
-    }
+                        .content("{\"id\": 1, \"phone\": \"9876543210\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Owner updated successfully")); // Expect response message
 
+        verify(ownerService, times(1)).updateOwnerByPhone(eq("1234567890"), any(UserDto.class));
+    }
 
 }
 
