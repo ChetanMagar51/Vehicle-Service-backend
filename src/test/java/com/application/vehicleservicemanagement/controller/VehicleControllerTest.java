@@ -87,7 +87,7 @@ class VehicleControllerTest {
 
         when(vehicleService.getAllVehicles()).thenReturn(vehicleList);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/vehicle/get/all")
+        mockMvc.perform(MockMvcRequestBuilders.get("/vehicle/all")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -109,7 +109,7 @@ class VehicleControllerTest {
 
         when(vehicleService.getAllDueVehicles()).thenReturn(dueVehicleList);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/vehicle/get/all/due")
+        mockMvc.perform(MockMvcRequestBuilders.get("/vehicle/all/due")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -132,7 +132,7 @@ class VehicleControllerTest {
 
         when(vehicleService.getAllScheduledVehicles()).thenReturn(scheduledVehicleList);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/vehicle/get/all/scheduled")
+        mockMvc.perform(MockMvcRequestBuilders.get("/vehicle/all/scheduled")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -155,7 +155,7 @@ class VehicleControllerTest {
 
         when(vehicleService.getAllVehiclesUnderServicing()).thenReturn(underServicingVehicleList);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/vehicle/get/all/underServicing")
+        mockMvc.perform(MockMvcRequestBuilders.get("/vehicle/all/underServicing")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -178,7 +178,7 @@ class VehicleControllerTest {
 
         when(vehicleService.getAllServicedVehicles()).thenReturn(servicedVehicleList);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/vehicle/get/all/serviced")
+        mockMvc.perform(MockMvcRequestBuilders.get("/vehicle/all/serviced")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
