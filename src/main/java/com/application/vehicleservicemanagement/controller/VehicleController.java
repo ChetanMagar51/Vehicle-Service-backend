@@ -55,11 +55,11 @@ public class VehicleController {
 
     @GetMapping("/get/scheduled")
     public ResponseEntity<List<VehicleResponse>> getScheduledVehiclesByServiceAdvisor(@RequestParam Long serviceAdvisorId) {
-        return new ResponseEntity<>(vehicleService.getScheduledVehiclesByServiceAdvisor(serviceAdvisorId), HttpStatus.FOUND);
+        return new ResponseEntity<>(vehicleService.getScheduledVehiclesByServiceAdvisor(serviceAdvisorId), HttpStatus.OK);
     }
 
     @GetMapping("/get/serviced")
     public ResponseEntity<List<VehicleResponse>> getServicedVehiclesByServiceAdvisor(@RequestParam Long serviceAdvisorId) {
-        return new ResponseEntity<>(vehicleService.getServicedVehiclesByServiceAdvisor(serviceAdvisorId), HttpStatus.FOUND);
+        return new ResponseEntity<>(vehicleService.getServicedVehiclesByServiceAdvisor(serviceAdvisorId), HttpStatus.OK);
     }
 }

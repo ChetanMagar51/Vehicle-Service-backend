@@ -31,8 +31,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**", "/swagger-ui/**",
                                 "/swagger-resources/**","/v3/api-docs/**").permitAll()
-                        .requestMatchers("/user/**", "/item", "/owner/**", "/invoice/**").hasAnyAuthority(Role.ADMIN.name())
-                        .requestMatchers("/vehicle/**", "/service/**").hasAnyAuthority(Role.ADMIN.name(), Role.SERVICE_ADVISOR.name())
+                        .requestMatchers("/user/**", "/owner/**", "/invoice/**").hasAnyAuthority(Role.ADMIN.name())
+                        .requestMatchers("/vehicle/**", "/item", "/service/**").hasAnyAuthority(Role.ADMIN.name(), Role.SERVICE_ADVISOR.name())
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(jwtAuthenticationEntryPoint))
