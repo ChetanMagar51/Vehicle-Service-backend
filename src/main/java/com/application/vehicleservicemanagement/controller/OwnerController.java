@@ -51,4 +51,9 @@ public class OwnerController {
     public ResponseEntity<ApiResponse> updateOwnerByPhone(@RequestParam String phone, @RequestBody UserDto userDto) {
         return new ResponseEntity<>(ownerService.updateOwnerByPhone(phone, userDto), HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<ApiResponse> deleteOwnerById(@RequestParam(value = "id") Long id) {
+        return new ResponseEntity<>(ownerService.deleteOwnerById(id), HttpStatus.OK);
+    }
 }

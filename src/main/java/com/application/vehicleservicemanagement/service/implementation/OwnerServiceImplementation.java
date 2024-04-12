@@ -76,6 +76,12 @@ public class OwnerServiceImplementation implements OwnerService {
         return updateOwner(userDto, owner);
     }
 
+    @Override
+    public ApiResponse deleteOwnerById(Long id) {
+        ownerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Owner", "id", id.toString()));
+        return ApiResponse.builder().message("Owner deleted successfully.").status("Success").build();
+    }
+
     private ApiResponse updateOwner(UserDto userDto, Owner owner) {
         owner.setFirstName(userDto.getFirstName());
         owner.setLastName(userDto.getLastName());

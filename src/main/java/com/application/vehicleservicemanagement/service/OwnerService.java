@@ -22,4 +22,6 @@ public interface OwnerService {
     ApiResponse updateOwnerById(Long id, UserDto userDto);
 
     ApiResponse updateOwnerByPhone(String phone, UserDto userDto);
+
+    ApiResponse deleteOwnerById(Long id);
 }
