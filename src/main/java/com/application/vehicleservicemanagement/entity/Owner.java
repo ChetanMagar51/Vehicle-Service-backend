@@ -35,7 +35,7 @@ public class Owner {
     @Column(nullable = false)
     private String address;
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Vehicle> vehicleList;
 }

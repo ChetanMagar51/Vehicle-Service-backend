@@ -79,6 +79,7 @@ public class OwnerServiceImplementation implements OwnerService {
     @Override
     public ApiResponse deleteOwnerById(Long id) {
         ownerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Owner", "id", id.toString()));
+        ownerRepository.deleteById(id);
         return ApiResponse.builder().message("Owner deleted successfully.").status("Success").build();
     }
 
