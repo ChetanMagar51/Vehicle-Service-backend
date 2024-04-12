@@ -125,12 +125,12 @@ public class VehicleServiceImplementation implements VehicleService {
     }
 
     @Override
-    public ApiResponse completeVehicleService(String vehicleNumber, List<String> itemNameList) {
+    public ApiResponse completeVehicleService(String vehicleNumber, List<Long> itemIdList) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         if (!(vehicle.getServiceStatus() == ServiceStatus.UNDER_SERVICING)) {
             return ApiResponse.builder().message("Failed to process the request!! Try again.").status("Failed").build();
         }
-        List<Optional<Item>> itemList = itemNameList.stream().map(itemRepository::findByNameIgnoreCase).toList();
+        List<Optional<Item>> itemList = itemIdList.stream().map(itemRepository::findById).toList();
         ServiceRecord serviceRecord = ServiceRecord.builder()
                 .vehicle(vehicle)
                 .serviceAdvisor(vehicle.getServiceAdvisor())

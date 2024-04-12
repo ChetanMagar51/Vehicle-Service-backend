@@ -26,7 +26,7 @@ public class ServiceStatusController {
     }
 
     @PostMapping("/completeService")
-    public ResponseEntity<ApiResponse> completeVehicleService(@RequestParam(value = "vehicleNumber") String vehicleNumber, @RequestBody List<String> itemNameList) {
-        return ResponseEntity.ok(vehicleService.completeVehicleService(vehicleNumber, itemNameList));
+    public ResponseEntity<ApiResponse> completeVehicleService(@RequestParam(value = "vehicleNumber") String vehicleNumber, @RequestBody List<Long> itemIdList) {
+        return ResponseEntity.ok(vehicleService.completeVehicleService(vehicleNumber, itemIdList));
     }
 }

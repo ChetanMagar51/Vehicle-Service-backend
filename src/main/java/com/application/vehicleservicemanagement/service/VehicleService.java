@@ -31,5 +31,5 @@ public interface VehicleService {
 
     ApiResponse startVehicleService(String vehicleNumber);
 
-    ApiResponse completeVehicleService(String vehicleNumber, List<String> itemNameList);
+    ApiResponse completeVehicleService(String vehicleNumber, List<Long> itemIdList);
 }
