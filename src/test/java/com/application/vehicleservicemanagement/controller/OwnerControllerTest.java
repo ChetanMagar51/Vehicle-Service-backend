@@ -67,7 +67,7 @@ public class OwnerControllerTest {
                         .param("id", "1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(status().isFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("John"));
     }
@@ -84,7 +84,7 @@ public class OwnerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("9876543210"))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(status().isFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1));
     }
 
@@ -104,7 +104,7 @@ public class OwnerControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/owner/get/all")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].firstName").value("John"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2))
@@ -128,7 +128,7 @@ public class OwnerControllerTest {
                         .param("id", "1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2));
     }
@@ -145,7 +145,7 @@ public class OwnerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\": 1, \"firstName\": \"UpdatedName\"}"))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -161,7 +161,7 @@ public class OwnerControllerTest {
                         .param("phone", "1234567890")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\": 1, \"phone\": \"9876543210\"}"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Owner updated successfully")); // Expect response message
 
         verify(ownerService, times(1)).updateOwnerByPhone(eq("1234567890"), any(UserDto.class));

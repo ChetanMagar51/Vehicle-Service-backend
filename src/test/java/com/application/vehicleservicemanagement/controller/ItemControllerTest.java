@@ -21,6 +21,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -50,7 +51,7 @@ class ItemControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\": 1, \"name\": \"Oil\"}"))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Item added successfully"));
 
     }
@@ -67,7 +68,7 @@ class ItemControllerTest {
                         .param("id", "1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(status().isFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1));
     }
 
@@ -83,7 +84,7 @@ class ItemControllerTest {
                         .param("name", "Brake")
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(status().isFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Brake"));
     }
 
@@ -103,7 +104,7 @@ class ItemControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/item/get/all")
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Oil"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Brake"));
     }
@@ -121,7 +122,7 @@ class ItemControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\": 1, \"name\": \"Engine\"}"))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Item updated successfully"));
     }
 
@@ -138,7 +139,7 @@ class ItemControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\": 1, \"name\": \"Gearbox\"}"))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Item updated successfully"));
     }
 
@@ -149,7 +150,7 @@ class ItemControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/item/delete/id")
                         .param("id", "1"))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Item deleted successfully"));
     }
 
@@ -160,7 +161,7 @@ class ItemControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/item/delete/name")
                         .param("name", "Clutch"))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Item deleted successfully"));
     }
 }
