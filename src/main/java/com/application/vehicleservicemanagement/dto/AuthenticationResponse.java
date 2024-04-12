@@ -14,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class AuthenticationResponse {
     private String status;
+    private UserDto userDto;
     private String token;
     private LocalDateTime issuedAt;
     private Date expiration;

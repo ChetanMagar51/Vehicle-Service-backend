@@ -6,6 +6,4 @@ public interface AuthenticationService {
     ApiResponse register(RegisterRequest registerRequest);
 
     AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest);
-
-    UserDto getCurrentUser();
 }

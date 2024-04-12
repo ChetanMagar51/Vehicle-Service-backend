@@ -27,8 +27,6 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
     private final AuthenticationManager authenticationManager;
     private final ModelMapper modelMapper;
 
-    private User user;
-
     @Override
     public ApiResponse register(RegisterRequest registerRequest) {
         return userService.createUser(registerRequest);
@@ -38,27 +36,22 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
         String reqEmail = authenticationRequest.getEmail();
         String reqPassword = authenticationRequest.getPassword();
-        User temp = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User", "userEmail", reqEmail));
-        if (!(Objects.equals(authenticationRequest.getType(), temp.getRole().name()))) {
-            throw new InvalidRoleException(temp.getRole().name());
+        User user = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User", "userEmail", reqEmail));
+        if (!(Objects.equals(authenticationRequest.getType(), user.getRole().name()))) {
+            throw new InvalidRoleException(user.getRole().name());
         }
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(reqEmail, reqPassword));
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Invalid credentials !! Please try again.");
         }
-        user = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User", "userEmail", reqEmail));
         String jwtToken = jwtUtil.generateToken(user);
         return AuthenticationResponse.builder()
                 .status("Success")
+                .userDto(modelMapper.map(user, UserDto.class))
                 .token(jwtToken)
                 .issuedAt(LocalDateTime.now())
                 .expiration(jwtUtil.extractExpiration(jwtToken))
                 .build();
-    }
-
-    @Override
-    public UserDto getCurrentUser() {
-        return modelMapper.map(user, UserDto.class);
     }
 }
