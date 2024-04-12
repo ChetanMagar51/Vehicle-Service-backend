@@ -3,7 +3,6 @@ package com.application.vehicleservicemanagement.controller;
 import com.application.vehicleservicemanagement.dto.ApiResponse;
 import com.application.vehicleservicemanagement.dto.VehicleDto;
 import com.application.vehicleservicemanagement.dto.VehicleResponse;
-import com.application.vehicleservicemanagement.entity.Vehicle;
 import com.application.vehicleservicemanagement.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,28 +28,38 @@ public class VehicleController {
         return new ResponseEntity<>(vehicleService.getVehicleByVehicleNumber(vehicleNumber), HttpStatus.FOUND);
     }
 
-    @GetMapping("/get/all")
+    @GetMapping("/all")
     public ResponseEntity<List<VehicleResponse>> getAllVehicles() {
         return ResponseEntity.ok(vehicleService.getAllVehicles());
     }
 
-    @GetMapping("/get/all/due")
+    @GetMapping("/all/due")
     public ResponseEntity<List<VehicleResponse>> getAllDueVehicles() {
         return ResponseEntity.ok(vehicleService.getAllDueVehicles());
     }
 
-    @GetMapping("/get/all/scheduled")
+    @GetMapping("/all/scheduled")
     public ResponseEntity<List<VehicleResponse>> getAllScheduledVehicles() {
         return ResponseEntity.ok(vehicleService.getAllScheduledVehicles());
     }
 
-    @GetMapping("/get/all/underServicing")
+    @GetMapping("/all/underServicing")
     public ResponseEntity<List<VehicleResponse>> getAllVehiclesUnderServicing() {
         return ResponseEntity.ok(vehicleService.getAllVehiclesUnderServicing());
     }
 
-    @GetMapping("/get/all/serviced")
+    @GetMapping("/all/serviced")
     public ResponseEntity<List<VehicleResponse>> getAllServicedVehicles() {
         return ResponseEntity.ok(vehicleService.getAllServicedVehicles());
+    }
+
+    @GetMapping("/get/scheduled")
+    public ResponseEntity<List<VehicleResponse>> getScheduledVehiclesByServiceAdvisor(@RequestParam Long serviceAdvisorId) {
+        return new ResponseEntity<>(vehicleService.getScheduledVehiclesByServiceAdvisor(serviceAdvisorId), HttpStatus.FOUND);
+    }
+
+    @GetMapping("/get/serviced")
+    public ResponseEntity<List<VehicleResponse>> getServicedVehiclesByServiceAdvisor(@RequestParam Long serviceAdvisorId) {
+        return new ResponseEntity<>(vehicleService.getServicedVehiclesByServiceAdvisor(serviceAdvisorId), HttpStatus.FOUND);
     }
 }
