@@ -201,12 +201,13 @@ public class VehicleServiceImplementationTest {
     void testCompleteVehicleService(){
         String vehicleNumber = "ABC123";
 
-        List<String> itemNameList = new ArrayList<>();
-        itemNameList.add("Oil Change");
+        List<Long> itemIdList = new ArrayList<>();
+        itemIdList.add(1L);
         Vehicle vehicle = new Vehicle();
         List<Optional<Item>> itemList = new ArrayList<>();
 
         Item item = new Item();
+        item.setId(1L);
         item.setName("Oil Change");
         item.setPrice(50.0);
         itemList.add(Optional.of(item));
@@ -216,7 +217,7 @@ public class VehicleServiceImplementationTest {
         when(modelMapper.map(any(Item.class), eq(Item.class))).thenReturn(new Item());
         when(advisorService.updateAdvisorStatus(any(User.class))).thenReturn(true);
 
-        ApiResponse response = vehicleService.completeVehicleService(vehicleNumber, itemNameList);
+        ApiResponse response = vehicleService.completeVehicleService(vehicleNumber, itemIdList);
 
         assertNotNull(response);
 //        assertEquals("Vehicle service completed.", response.getMessage()); // Correct expected message
