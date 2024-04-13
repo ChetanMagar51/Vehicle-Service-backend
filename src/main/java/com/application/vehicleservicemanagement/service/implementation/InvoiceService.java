@@ -63,7 +63,7 @@ public class InvoiceService {
             cell1.setPadding(20);
             table.addCell(cell1);
 
-            PdfPCell cell2 = new PdfPCell(new Phrase("Nikhil Gaadiwaala\nPune, Maharashtra", new Font(Font.TIMES_ROMAN, 10, Font.NORMAL, Color.WHITE)));
+            PdfPCell cell2 = new PdfPCell(new Phrase("Nikhil Gaadiwala\nPune, Maharashtra", new Font(Font.TIMES_ROMAN, 10, Font.NORMAL, Color.WHITE)));
             cell2.setBackgroundColor(new Color(54, 191, 255));
             cell2.setVerticalAlignment(Element.ALIGN_CENTER);
             cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);

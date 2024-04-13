@@ -135,7 +135,12 @@ public class VehicleServiceImplementation implements VehicleService {
                 .vehicle(vehicle)
                 .serviceAdvisor(vehicle.getServiceAdvisor())
                 .itemList(itemList.stream().map(item -> modelMapper.map(item, Item.class)).toList())
-                .amount(itemList.stream().mapToDouble(item -> item.get().getPrice()).sum())
+                .amount(itemList.stream().mapToDouble(item -> {
+                    if (item.isPresent()) {
+                        return item.get().getPrice();
+                    }
+                    return 0;
+                }).sum())
                 .date(LocalDateTime.now().plusHours(6))
                 .isAdminApproved(Boolean.FALSE)
                 .isPaymentCompleted(Boolean.FALSE)

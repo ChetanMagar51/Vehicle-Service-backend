@@ -25,8 +25,6 @@ public class ServiceRecord {
     @DateTimeFormat
     private LocalDateTime date;
 
-    private Integer quantity;
-
     @OneToMany
     private List<Item> itemList;
 
