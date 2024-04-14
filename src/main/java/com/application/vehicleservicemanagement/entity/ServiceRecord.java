@@ -25,7 +25,7 @@ public class ServiceRecord {
     @DateTimeFormat
     private LocalDateTime date;
 
-    @OneToMany
+    @ManyToMany
     private List<Item> itemList;
 
     private Double amount;
