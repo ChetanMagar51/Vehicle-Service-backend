@@ -31,7 +31,7 @@ public class AdvisorServiceImplementationTest {
         // Mocking the repository save method to return the same advisor object
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        boolean updated = advisorService.updateAdvisorStatus(serviceAdvisor);
+        boolean updated = advisorService.updateAdvisorStatusDuringScheduling(serviceAdvisor);
 
         assertTrue(updated);
         // Scheduled vehicle count should increase by 1

@@ -174,7 +174,7 @@ public class VehicleServiceImplementationTest {
         serviceAdvisor.setId(serviceAdvisorId);
         when(vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber)).thenReturn(Optional.of(vehicle));
         when(userRepository.findByRoleAndId(Role.SERVICE_ADVISOR, serviceAdvisorId)).thenReturn(Optional.of(serviceAdvisor));
-        when(advisorService.updateAdvisorStatus(serviceAdvisor)).thenReturn(true);
+        when(advisorService.updateAdvisorStatusDuringScheduling(serviceAdvisor)).thenReturn(true);
 
         ApiResponse response = vehicleService.scheduleVehicleForService(vehicleNumber, serviceAdvisorId);
 
@@ -215,7 +215,7 @@ public class VehicleServiceImplementationTest {
         when(vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber)).thenReturn(Optional.of(vehicle));
         when(itemRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(new Item()));
         when(modelMapper.map(any(Item.class), eq(Item.class))).thenReturn(new Item());
-        when(advisorService.updateAdvisorStatus(any(User.class))).thenReturn(true);
+        when(advisorService.updateAdvisorStatusDuringScheduling(any(User.class))).thenReturn(true);
 
         ApiResponse response = vehicleService.completeVehicleService(vehicleNumber, itemIdList);
 

@@ -102,7 +102,7 @@ public class VehicleServiceImplementation implements VehicleService {
     public ApiResponse scheduleVehicleForService(String vehicleNumber, Long serviceAdvisorId) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         User serviceAdvisor = userRepository.findByRoleAndId(Role.SERVICE_ADVISOR, serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("Service Advisor", "id", serviceAdvisorId.toString()));
-        if (!(vehicle.getServiceStatus() == ServiceStatus.DUE) || !advisorService.updateAdvisorStatus(serviceAdvisor)) {
+        if (!(vehicle.getServiceStatus() == ServiceStatus.DUE) || !advisorService.updateAdvisorStatusDuringScheduling(serviceAdvisor)) {
             return ApiResponse.builder().message("Failed to process the request!! Try again.").status("Failed").build();
         }
         vehicle.setServiceAdvisor(serviceAdvisor);
@@ -147,6 +147,7 @@ public class VehicleServiceImplementation implements VehicleService {
                 .build();
         vehicle.setServiceRecord(serviceRecord);
         vehicle.setServiceStatus(ServiceStatus.SERVICED);
+        advisorService.updateAdvisorStatusAfterService(vehicle.getServiceAdvisor(), vehicle);
         vehicleRepository.save(vehicle);
         return ApiResponse.builder().message("Vehicle service completed.").status("Success").build();
     }
