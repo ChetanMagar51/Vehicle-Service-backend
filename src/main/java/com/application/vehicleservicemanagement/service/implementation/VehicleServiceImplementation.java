@@ -87,28 +87,29 @@ public class VehicleServiceImplementation implements VehicleService {
 
     @Override
     public List<VehicleResponse> getAllVehiclesByServiceAdvisor(Long serviceAdvisorId) {
-        List<Vehicle> vehicles = vehicleRepository.findAll().stream().filter(vehicle -> vehicle.getServiceAdvisor().getId().equals(serviceAdvisorId)).toList();
+        User serviceAdvisor = userRepository.findById(serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("User", "id", serviceAdvisorId.toString()));
+        List<Vehicle> vehicles = serviceAdvisor.getVehicleList();
         return vehicles.stream().map(vehicle -> modelMapper.map(vehicle, VehicleResponse.class)).toList();
     }
 
     @Override
     public List<VehicleResponse> getScheduledVehiclesByServiceAdvisor(Long serviceAdvisorId) {
-        List<Vehicle> vehicles = vehicleRepository.findAllByServiceStatus(ServiceStatus.SCHEDULED);
-        vehicles = vehicles.stream().filter(vehicle -> vehicle.getServiceAdvisor().getId().equals(serviceAdvisorId)).toList();
+        User serviceAdvisor = userRepository.findById(serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("User", "id", serviceAdvisorId.toString()));
+        List<Vehicle> vehicles = serviceAdvisor.getVehicleList().stream().filter(vehicle -> vehicle.getServiceStatus() == ServiceStatus.SCHEDULED).toList();
         return vehicles.stream().map(vehicle -> modelMapper.map(vehicle, VehicleResponse.class)).toList();
     }
 
     @Override
     public List<VehicleResponse> getVehiclesUnderServicingByServiceAdvisor(Long serviceAdvisorId) {
-        List<Vehicle> vehicles = vehicleRepository.findAllByServiceStatus(ServiceStatus.UNDER_SERVICING);
-        vehicles = vehicles.stream().filter(vehicle -> vehicle.getServiceAdvisor().getId().equals(serviceAdvisorId)).toList();
+        User serviceAdvisor = userRepository.findById(serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("User", "id", serviceAdvisorId.toString()));
+        List<Vehicle> vehicles = serviceAdvisor.getVehicleList().stream().filter(vehicle -> vehicle.getServiceStatus() == ServiceStatus.UNDER_SERVICING).toList();
         return vehicles.stream().map(vehicle -> modelMapper.map(vehicle, VehicleResponse.class)).toList();
     }
 
     @Override
     public List<VehicleResponse> getServicedVehiclesByServiceAdvisor(Long serviceAdvisorId) {
-        List<Vehicle> vehicles = vehicleRepository.findAllByServiceStatus(ServiceStatus.SERVICED);
-        vehicles = vehicles.stream().filter(vehicle -> vehicle.getServiceAdvisor().getId().equals(serviceAdvisorId)).toList();
+        User serviceAdvisor = userRepository.findById(serviceAdvisorId).orElseThrow(() -> new ResourceNotFoundException("User", "id", serviceAdvisorId.toString()));
+        List<Vehicle> vehicles = serviceAdvisor.getVehicleList().stream().filter(vehicle -> vehicle.getServiceStatus() == ServiceStatus.SERVICED).toList();
         return vehicles.stream().map(vehicle -> modelMapper.map(vehicle, VehicleResponse.class)).toList();
     }
 
