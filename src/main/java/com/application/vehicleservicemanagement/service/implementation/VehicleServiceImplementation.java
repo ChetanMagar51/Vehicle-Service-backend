@@ -161,8 +161,8 @@ public class VehicleServiceImplementation implements VehicleService {
                 .build();
         vehicle.setServiceRecord(serviceRecord);
         vehicle.setServiceStatus(ServiceStatus.SERVICED);
-        advisorService.updateAdvisorStatusAfterService(vehicle.getServiceAdvisor(), vehicle);
         vehicleRepository.save(vehicle);
+        advisorService.updateAdvisorStatusAfterService(vehicle.getServiceAdvisor(), vehicle);
         return ApiResponse.builder().message("Vehicle service completed.").status("Success").build();
     }
 
