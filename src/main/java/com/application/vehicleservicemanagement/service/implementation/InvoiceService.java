@@ -22,10 +22,12 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import com.lowagie.text.Image;
 
 import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 @Service
@@ -56,6 +58,16 @@ public class InvoiceService {
             PdfPTable table = new PdfPTable(colWidth);
             table.setWidthPercentage(100);
 
+            Image logo = null;
+            try {
+                logo = Image.getInstance("images/PrimeAutomobiles.png");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            PdfPCell logoCell = new PdfPCell(logo, true);
+            logoCell.setBorder(Rectangle.NO_BORDER);
+            table.addCell(logoCell);
+
             PdfPCell cell1 = new PdfPCell(new Phrase("INVOICE", new Font(Font.TIMES_ROMAN, 20, Font.BOLD, Color.WHITE)));
             cell1.setBackgroundColor(new Color(54, 191, 255));
             cell1.setVerticalAlignment(Element.ALIGN_CENTER);
@@ -77,7 +89,7 @@ public class InvoiceService {
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 15, Color.BLACK); // RGB Color
             Paragraph titlePara = new Paragraph(" Vehicle and Customer Details", titleFont);
 
-            float[] col2Width = {100, 250, 100, 150};
+            float[] col2Width = {100, 300, 100, 150};
             PdfPTable tableVehicle = new PdfPTable(col2Width);
             tableVehicle.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
