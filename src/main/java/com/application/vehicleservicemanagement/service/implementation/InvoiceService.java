@@ -27,6 +27,8 @@ import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +41,7 @@ public class InvoiceService {
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "id", vehicleId.toString()));
         ServiceRecord serviceRecord = vehicle.getServiceRecord();
         Owner owner = vehicle.getOwner();
+        Map<Item, Integer> itemQuantityMap = serviceRecord.getItemQuantityMap();
 
         logger.info("Create PDF Started");
 
@@ -105,11 +108,13 @@ public class InvoiceService {
             serviceTable.addCell(new Phrase("Quantity", new Font(Font.TIMES_ROMAN, 12, Font.BOLD, Color.BLACK)));
             serviceTable.addCell(new Phrase("Amount", new Font(Font.TIMES_ROMAN, 12, Font.BOLD, Color.BLACK)));
 
-            for (Item item: serviceRecord.getItemList()) {
-                serviceTable.addCell(String.valueOf((serviceRecord.getItemList().indexOf(item) + 1)));
+            int srno = 1;
+            for (Item item: itemQuantityMap.keySet()) {
+                serviceTable.addCell(Integer.toString(srno));
                 serviceTable.addCell(item.getName());
-                serviceTable.addCell(String.valueOf(1));
-                serviceTable.addCell(item.getPrice().toString());
+                serviceTable.addCell(itemQuantityMap.get(item).toString());
+                serviceTable.addCell(itemQuantityMap.get(item).toString() + " * " + item.getPrice().toString());
+                srno ++;
             }
 
             float[] amountCol = {550, 250};

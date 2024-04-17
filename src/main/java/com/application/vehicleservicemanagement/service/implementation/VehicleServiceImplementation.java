@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -140,22 +140,23 @@ public class VehicleServiceImplementation implements VehicleService {
     }
 
     @Override
-    public ApiResponse completeVehicleService(String vehicleNumber, List<Long> itemIdList) {
+    public ApiResponse completeVehicleService(String vehicleNumber, HashMap<Long, Integer> itemQuantityMap) {
         Vehicle vehicle = vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "vehicleNumber", vehicleNumber));
         if (!(vehicle.getServiceStatus() == ServiceStatus.UNDER_SERVICING)) {
             return ApiResponse.builder().message("Failed to process the request!! Try again.").status("Failed").build();
         }
-        List<Optional<Item>> itemList = itemIdList.stream().map(itemRepository::findById).toList();
+        HashMap<Item, Integer> map = new HashMap<>();
+        double amount = 0d;
+        for (Map.Entry<Long, Integer> entry : itemQuantityMap.entrySet()) {
+            Item item = itemRepository.findById(entry.getKey()).orElseThrow(() -> new ResourceNotFoundException("Item", "id", entry.getKey().toString()));
+            map.put(item, entry.getValue());
+            amount += item.getPrice() * map.get(item);
+        }
         ServiceRecord serviceRecord = ServiceRecord.builder()
                 .vehicle(vehicle)
                 .serviceAdvisor(vehicle.getServiceAdvisor())
-                .itemList(itemList.stream().map(item -> modelMapper.map(item, Item.class)).toList())
-                .amount(itemList.stream().mapToDouble(item -> {
-                    if (item.isPresent()) {
-                        return item.get().getPrice();
-                    }
-                    return 0;
-                }).sum())
+                .itemQuantityMap(map)
+                .amount(amount)
                 .date(LocalDateTime.now().plusHours(6))
                 .isAdminApproved(Boolean.FALSE)
                 .isPaymentCompleted(Boolean.FALSE)

@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -25,8 +27,8 @@ public class ServiceRecord {
     @DateTimeFormat
     private LocalDateTime date;
 
-    @ManyToMany
-    private List<Item> itemList;
+    @ElementCollection
+    private Map<Item, Integer> itemQuantityMap;
 
     private Double amount;
 

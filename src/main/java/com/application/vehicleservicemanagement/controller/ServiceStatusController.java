@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -26,7 +27,7 @@ public class ServiceStatusController {
     }
 
     @PostMapping("/completeService")
-    public ResponseEntity<ApiResponse> completeVehicleService(@RequestParam(value = "vehicleNumber") String vehicleNumber, @RequestBody List<Long> itemIdList) {
-        return ResponseEntity.ok(vehicleService.completeVehicleService(vehicleNumber, itemIdList));
+    public ResponseEntity<ApiResponse> completeVehicleService(@RequestParam(value = "vehicleNumber") String vehicleNumber, @RequestBody HashMap<Long, Integer> itemQuantityMap) {
+        return ResponseEntity.ok(vehicleService.completeVehicleService(vehicleNumber, itemQuantityMap));
     }
 }

@@ -36,7 +36,7 @@ public interface VehicleService {
 
     ApiResponse startVehicleService(String vehicleNumber);
 
-    ApiResponse completeVehicleService(String vehicleNumber, List<Long> itemIdList);
+    ApiResponse completeVehicleService(String vehicleNumber, HashMap<Long, Integer> itemQuantityMap);
 
     HashMap<String, Integer> getStatusSummary();
 

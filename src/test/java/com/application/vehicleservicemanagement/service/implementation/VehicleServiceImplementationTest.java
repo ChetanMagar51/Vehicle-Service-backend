@@ -19,6 +19,7 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -201,23 +202,21 @@ public class VehicleServiceImplementationTest {
     void testCompleteVehicleService(){
         String vehicleNumber = "ABC123";
 
-        List<Long> itemIdList = new ArrayList<>();
-        itemIdList.add(1L);
+        HashMap<Long, Integer> itemQuantityMap = new HashMap<>();
         Vehicle vehicle = new Vehicle();
-        List<Optional<Item>> itemList = new ArrayList<>();
 
         Item item = new Item();
         item.setId(1L);
         item.setName("Oil Change");
         item.setPrice(50.0);
-        itemList.add(Optional.of(item));
+        itemQuantityMap.put(1L, 2);
 
         when(vehicleRepository.findByVehicleNumberIgnoreCase(vehicleNumber)).thenReturn(Optional.of(vehicle));
         when(itemRepository.findByNameIgnoreCase(anyString())).thenReturn(Optional.of(new Item()));
         when(modelMapper.map(any(Item.class), eq(Item.class))).thenReturn(new Item());
         when(advisorService.updateAdvisorStatusDuringScheduling(any(User.class))).thenReturn(true);
 
-        ApiResponse response = vehicleService.completeVehicleService(vehicleNumber, itemIdList);
+        ApiResponse response = vehicleService.completeVehicleService(vehicleNumber, itemQuantityMap);
 
         assertNotNull(response);
 //        assertEquals("Vehicle service completed.", response.getMessage()); // Correct expected message
