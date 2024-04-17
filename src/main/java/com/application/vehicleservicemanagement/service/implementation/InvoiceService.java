@@ -58,16 +58,6 @@ public class InvoiceService {
             PdfPTable table = new PdfPTable(colWidth);
             table.setWidthPercentage(100);
 
-            Image logo = null;
-            try {
-                logo = Image.getInstance("images/PrimeAutomobiles.png");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            PdfPCell logoCell = new PdfPCell(logo, true);
-            logoCell.setBorder(Rectangle.NO_BORDER);
-            table.addCell(logoCell);
-
             PdfPCell cell1 = new PdfPCell(new Phrase("INVOICE", new Font(Font.TIMES_ROMAN, 20, Font.BOLD, Color.WHITE)));
             cell1.setBackgroundColor(new Color(54, 191, 255));
             cell1.setVerticalAlignment(Element.ALIGN_CENTER);
