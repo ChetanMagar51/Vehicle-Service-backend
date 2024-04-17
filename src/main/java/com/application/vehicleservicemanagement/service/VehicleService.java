@@ -4,6 +4,7 @@ import com.application.vehicleservicemanagement.dto.ApiResponse;
 import com.application.vehicleservicemanagement.dto.VehicleDto;
 import com.application.vehicleservicemanagement.dto.VehicleResponse;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface VehicleService {
@@ -23,7 +24,11 @@ public interface VehicleService {
 
     List<VehicleResponse> getAllServicedVehicles();
 
+    List<VehicleResponse> getAllVehiclesByServiceAdvisor(Long serviceAdvisorId);
+
     List<VehicleResponse> getScheduledVehiclesByServiceAdvisor(Long serviceAdvisorId);
+
+    List<VehicleResponse> getVehiclesUnderServicingByServiceAdvisor(Long serviceAdvisorId);
 
     List<VehicleResponse> getServicedVehiclesByServiceAdvisor(Long serviceAdvisorId);
 
@@ -32,4 +37,8 @@ public interface VehicleService {
     ApiResponse startVehicleService(String vehicleNumber);
 
     ApiResponse completeVehicleService(String vehicleNumber, List<Long> itemIdList);
+
+    HashMap<String, Integer> getStatusSummary();
+
+    HashMap<String, Integer> getStatusSummaryForAdvisor(Long advisorId);
 }

@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,8 +86,21 @@ public class VehicleServiceImplementation implements VehicleService {
     }
 
     @Override
+    public List<VehicleResponse> getAllVehiclesByServiceAdvisor(Long serviceAdvisorId) {
+        List<Vehicle> vehicles = vehicleRepository.findAll().stream().filter(vehicle -> vehicle.getServiceAdvisor().getId().equals(serviceAdvisorId)).toList();
+        return vehicles.stream().map(vehicle -> modelMapper.map(vehicle, VehicleResponse.class)).toList();
+    }
+
+    @Override
     public List<VehicleResponse> getScheduledVehiclesByServiceAdvisor(Long serviceAdvisorId) {
         List<Vehicle> vehicles = vehicleRepository.findAllByServiceStatus(ServiceStatus.SCHEDULED);
+        vehicles = vehicles.stream().filter(vehicle -> vehicle.getServiceAdvisor().getId().equals(serviceAdvisorId)).toList();
+        return vehicles.stream().map(vehicle -> modelMapper.map(vehicle, VehicleResponse.class)).toList();
+    }
+
+    @Override
+    public List<VehicleResponse> getVehiclesUnderServicingByServiceAdvisor(Long serviceAdvisorId) {
+        List<Vehicle> vehicles = vehicleRepository.findAllByServiceStatus(ServiceStatus.UNDER_SERVICING);
         vehicles = vehicles.stream().filter(vehicle -> vehicle.getServiceAdvisor().getId().equals(serviceAdvisorId)).toList();
         return vehicles.stream().map(vehicle -> modelMapper.map(vehicle, VehicleResponse.class)).toList();
     }
@@ -150,6 +164,27 @@ public class VehicleServiceImplementation implements VehicleService {
         advisorService.updateAdvisorStatusAfterService(vehicle.getServiceAdvisor(), vehicle);
         vehicleRepository.save(vehicle);
         return ApiResponse.builder().message("Vehicle service completed.").status("Success").build();
+    }
+
+    @Override
+    public HashMap<String, Integer> getStatusSummary() {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("All", vehicleRepository.findAll().size());
+        map.put("Due", getAllDueVehicles().size());
+        map.put("Scheduled", getAllScheduledVehicles().size());
+        map.put("Under-servicing", getAllVehiclesUnderServicing().size());
+        map.put("Serviced", getAllServicedVehicles().size());
+        return map;
+    }
+
+    @Override
+    public HashMap<String, Integer> getStatusSummaryForAdvisor(Long advisorId) {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("All", getAllVehiclesByServiceAdvisor(advisorId).size());
+        map.put("Scheduled", getScheduledVehiclesByServiceAdvisor(advisorId).size());
+        map.put("Under-servicing", getVehiclesUnderServicingByServiceAdvisor(advisorId).size());
+        map.put("Serviced", getServicedVehiclesByServiceAdvisor(advisorId).size());
+        return map;
     }
 
     private LocalDateTime getExpectedDeliveryTime(Integer queueNumber) {
