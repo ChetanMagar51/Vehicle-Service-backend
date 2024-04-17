@@ -52,7 +52,7 @@ public class InvoiceService {
             document.open();
 
             float col = 300f;
-            float[] colWidth = {col,col, col};
+            float[] colWidth = {col, col};
             PdfPTable table = new PdfPTable(colWidth);
             table.setWidthPercentage(100);
 
@@ -73,7 +73,6 @@ public class InvoiceService {
             for (PdfPCell cell : table.getRow(0).getCells()) {
                 cell.setBorder(Rectangle.NO_BORDER);
             }
-
 
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 15, Color.BLACK); // RGB Color
             Paragraph titlePara = new Paragraph(" Vehicle and Customer Details", titleFont);
