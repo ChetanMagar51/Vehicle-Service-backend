@@ -52,18 +52,18 @@ public class InvoiceService {
             document.open();
 
             float col = 300f;
-            float[] colWidth = {col, col};
+            float[] colWidth = {col,col, col};
             PdfPTable table = new PdfPTable(colWidth);
             table.setWidthPercentage(100);
 
             PdfPCell cell1 = new PdfPCell(new Phrase("INVOICE", new Font(Font.TIMES_ROMAN, 20, Font.BOLD, Color.WHITE)));
             cell1.setBackgroundColor(new Color(54, 191, 255));
             cell1.setVerticalAlignment(Element.ALIGN_CENTER);
-            cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
             cell1.setPadding(20);
             table.addCell(cell1);
 
-            PdfPCell cell2 = new PdfPCell(new Phrase("Nikhil Gaadiwala\nPune, Maharashtra", new Font(Font.TIMES_ROMAN, 10, Font.NORMAL, Color.WHITE)));
+            PdfPCell cell2 = new PdfPCell(new Phrase("Prime Automobiles\nPune, Maharashtra", new Font(Font.TIMES_ROMAN, 10, Font.NORMAL, Color.WHITE)));
             cell2.setBackgroundColor(new Color(54, 191, 255));
             cell2.setVerticalAlignment(Element.ALIGN_CENTER);
             cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -74,8 +74,9 @@ public class InvoiceService {
                 cell.setBorder(Rectangle.NO_BORDER);
             }
 
+
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 15, Color.BLACK); // RGB Color
-            Paragraph titlePara = new Paragraph("Vehicle and Customer Details", titleFont);
+            Paragraph titlePara = new Paragraph(" Vehicle and Customer Details", titleFont);
 
             float[] col2Width = {100, 250, 100, 150};
             PdfPTable tableVehicle = new PdfPTable(col2Width);
@@ -93,7 +94,7 @@ public class InvoiceService {
             tableVehicle.addCell(new Phrase("Date", new Font(Font.TIMES_ROMAN, 12, Font.BOLD, Color.BLACK)));
             tableVehicle.addCell(serviceRecord.getDate().format(DateTimeFormatter.ISO_DATE));
 
-            Paragraph tablePara = new Paragraph("Serviced Items List", titleFont);
+            Paragraph tablePara = new Paragraph(" Serviced Items List", titleFont);
 
             float[] serviceCol = {100, 300, 150, 250};
             PdfPTable serviceTable = new PdfPTable(serviceCol);
