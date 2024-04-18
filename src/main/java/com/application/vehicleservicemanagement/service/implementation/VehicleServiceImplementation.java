@@ -28,6 +28,7 @@ public class VehicleServiceImplementation implements VehicleService {
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
     private final AdvisorService advisorService;
+    private final EmailService emailService;
     private final ModelMapper modelMapper;
 
     @Override
@@ -165,6 +166,7 @@ public class VehicleServiceImplementation implements VehicleService {
         vehicle.setServiceStatus(ServiceStatus.SERVICED);
         vehicleRepository.save(vehicle);
         advisorService.updateAdvisorStatusAfterService(vehicle.getServiceAdvisor(), vehicle);
+        emailService.sendEmail(vehicle.getOwner().getEmail(), "Vehicle Service Status", "Dear Customer, \n\nYour vehicle has been serviced, and is ready for the delivery/pickup. Invoice will be mailed to you shortly.\n\nThank You !!");
         return ApiResponse.builder().message("Vehicle service completed.").status("Success").build();
     }
 
