@@ -11,10 +11,12 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
+import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfCell;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -26,8 +28,8 @@ import org.springframework.stereotype.Service;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -55,9 +57,19 @@ public class InvoiceService {
             document.open();
 
             float col = 300f;
-            float[] colWidth = {col, col};
+            float[] colWidth = {col, col, col};
             PdfPTable table = new PdfPTable(colWidth);
             table.setWidthPercentage(100);
+
+            try {
+                Image image = Image.getInstance("/images/PrimeAutomobiles");
+                image.scaleAbsolute(100,100);
+                PdfPCell imageCell = new PdfPCell(image);
+                imageCell.setBorder(Rectangle.NO_BORDER);
+                table.addCell(imageCell);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             PdfPCell cell1 = new PdfPCell(new Phrase("INVOICE", new Font(Font.TIMES_ROMAN, 20, Font.BOLD, Color.WHITE)));
             cell1.setBackgroundColor(new Color(54, 191, 255));
