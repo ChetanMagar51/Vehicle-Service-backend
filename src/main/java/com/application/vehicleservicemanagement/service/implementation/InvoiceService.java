@@ -16,7 +16,6 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfCell;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -63,7 +62,7 @@ public class InvoiceService {
 
             try {
                 Image image = Image.getInstance("images/logo.png");
-                image.scaleAbsolute(100,80);
+                image.scaleAbsolute(100,70);
                 PdfPCell imageCell = new PdfPCell(image);
                 imageCell.setBackgroundColor(new Color(54, 191, 255));
                 imageCell.setBorder(Rectangle.NO_BORDER);
@@ -72,7 +71,7 @@ public class InvoiceService {
                 throw new RuntimeException(e);
             }
 
-            PdfPCell cell1 = new PdfPCell(new Phrase("INVOICE", new Font(Font.TIMES_ROMAN, 22, Font.BOLD, Color.WHITE)));
+            PdfPCell cell1 = new PdfPCell(new Phrase("INVOICE", new Font(Font.TIMES_ROMAN, 25, Font.BOLD, Color.WHITE)));
             cell1.setBackgroundColor(new Color(54, 191, 255));
             cell1.setVerticalAlignment(Element.ALIGN_CENTER);
             cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -81,7 +80,7 @@ public class InvoiceService {
 
             PdfPCell cell2 = new PdfPCell(new Phrase("Prime Automobiles\nPune, Maharashtra", new Font(Font.TIMES_ROMAN, 10, Font.NORMAL, Color.WHITE)));
             cell2.setBackgroundColor(new Color(54, 191, 255));
-            cell2.setVerticalAlignment(Element.ALIGN_CENTER);
+            cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
             cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
             cell2.setPadding(15);
             table.addCell(cell2);
