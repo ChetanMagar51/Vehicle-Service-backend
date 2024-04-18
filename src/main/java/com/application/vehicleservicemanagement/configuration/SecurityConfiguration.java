@@ -30,8 +30,8 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**", "/swagger-ui/**",
-                                "/swagger-resources/**","/v3/api-docs/**", "/invoice/**").permitAll()
-                        .requestMatchers("/admin/**", "/user/**", "/owner/**").hasAnyAuthority(Role.ADMIN.name())
+                                "/swagger-resources/**","/v3/api-docs/**").permitAll()
+                        .requestMatchers("/admin/**", "/user/**", "/owner/**", "/invoice/**").hasAnyAuthority(Role.ADMIN.name())
                         .requestMatchers("/serviceAdvisor/**").hasAnyAuthority(Role.SERVICE_ADVISOR.name())
                         .requestMatchers("/vehicle/**", "/item/**", "/service/**").hasAnyAuthority(Role.ADMIN.name(), Role.SERVICE_ADVISOR.name())
                         .anyRequest().authenticated())
