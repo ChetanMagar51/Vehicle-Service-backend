@@ -62,19 +62,20 @@ public class InvoiceService {
             table.setWidthPercentage(100);
 
             try {
-                Image image = Image.getInstance("/images/PrimeAutomobiles");
-                image.scaleAbsolute(100,100);
+                Image image = Image.getInstance("images/logo.png");
+                image.scaleAbsolute(100,80);
                 PdfPCell imageCell = new PdfPCell(image);
+                imageCell.setBackgroundColor(new Color(54, 191, 255));
                 imageCell.setBorder(Rectangle.NO_BORDER);
                 table.addCell(imageCell);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
-            PdfPCell cell1 = new PdfPCell(new Phrase("INVOICE", new Font(Font.TIMES_ROMAN, 20, Font.BOLD, Color.WHITE)));
+            PdfPCell cell1 = new PdfPCell(new Phrase("INVOICE", new Font(Font.TIMES_ROMAN, 22, Font.BOLD, Color.WHITE)));
             cell1.setBackgroundColor(new Color(54, 191, 255));
             cell1.setVerticalAlignment(Element.ALIGN_CENTER);
-            cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell1.setPadding(20);
             table.addCell(cell1);
 
@@ -89,7 +90,7 @@ public class InvoiceService {
                 cell.setBorder(Rectangle.NO_BORDER);
             }
 
-            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 15, Color.BLACK); // RGB Color
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11, Color.BLACK); // RGB Color
             Paragraph titlePara = new Paragraph(" Vehicle and Customer Details", titleFont);
 
             float[] col2Width = {100, 300, 100, 150};
