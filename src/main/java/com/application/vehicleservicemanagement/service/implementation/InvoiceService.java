@@ -61,7 +61,7 @@ public class InvoiceService {
             table.setWidthPercentage(100);
 
             try {
-                Image image = Image.getInstance("images/logo.png");
+                Image image = Image.getInstance("src/main/resources/static/logo.png");
                 image.scaleAbsolute(100,70);
                 PdfPCell imageCell = new PdfPCell(image);
                 imageCell.setBackgroundColor(new Color(54, 191, 255));
