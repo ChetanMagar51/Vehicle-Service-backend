@@ -68,7 +68,7 @@ public class InvoiceService {
                 imageCell.setBorder(Rectangle.NO_BORDER);
                 table.addCell(imageCell);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println(e.getMessage());
             }
 
             PdfPCell cell1 = new PdfPCell(new Phrase("INVOICE", new Font(Font.TIMES_ROMAN, 25, Font.BOLD, Color.WHITE)));
