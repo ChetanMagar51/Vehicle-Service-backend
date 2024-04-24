@@ -25,11 +25,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +60,7 @@ public class InvoiceService {
             table.setWidthPercentage(100);
 
             try {
-                Image image = Image.getInstance("src/main/resources/static/logo.png");
+                Image image = Image.getInstance(Objects.requireNonNull(getClass().getResource("/static/logo.png")).toExternalForm());
                 image.scaleAbsolute(100,70);
                 PdfPCell imageCell = new PdfPCell(image);
                 imageCell.setBackgroundColor(new Color(54, 191, 255));
