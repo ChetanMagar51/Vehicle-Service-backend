@@ -1,6 +1,7 @@
 package com.application.vehicleservicemanagement.controller;
 
 import com.application.vehicleservicemanagement.service.implementation.InvoiceService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +18,7 @@ public class InvoiceController {
     private final InvoiceService invoiceService;
 
     @GetMapping("/generate")
-    public ResponseEntity<InputStreamResource> createInvoice(@RequestParam(value = "vehicleId") Long id) {
+    public ResponseEntity<InputStreamResource> createInvoice(@RequestParam(value = "vehicleId") Long id) throws MessagingException {
         ByteArrayInputStream invoice = invoiceService.createInvoice(id);
 
         HttpHeaders httpHeaders=new HttpHeaders();

@@ -19,6 +19,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +35,11 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class InvoiceService {
     private final VehicleRepository vehicleRepository;
+    private final EmailService emailService;
 
     private final Logger logger = LoggerFactory.getLogger(InvoiceService.class);
 
-    public ByteArrayInputStream createInvoice(Long vehicleId) {
+    public ByteArrayInputStream createInvoice(Long vehicleId) throws MessagingException {
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "id", vehicleId.toString()));
         ServiceRecord serviceRecord = vehicle.getServiceRecord();
         Owner owner = vehicle.getOwner();
@@ -154,6 +156,8 @@ public class InvoiceService {
         } catch (DocumentException e) {
             logger.error("Error creating PDF", e);
         }
+
+        emailService.sendInvoice(owner.getEmail(), out.toByteArray());
 
         return new ByteArrayInputStream(out.toByteArray());
     }
