@@ -1,15 +1,25 @@
 package com.application.vehicleservicemanagement.controller;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.application.vehicleservicemanagement.dto.ApiResponse;
 import com.application.vehicleservicemanagement.dto.VehicleDto;
 import com.application.vehicleservicemanagement.dto.VehicleResponse;
 import com.application.vehicleservicemanagement.service.VehicleService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/vehicle")
@@ -62,4 +72,34 @@ public class VehicleController {
     public ResponseEntity<List<VehicleResponse>> getServicedVehiclesByServiceAdvisor(@RequestParam Long serviceAdvisorId) {
         return new ResponseEntity<>(vehicleService.getServicedVehiclesByServiceAdvisor(serviceAdvisorId), HttpStatus.OK);
     }
+    
+    @PutMapping("/vehicle/{id}/update")
+    public ResponseEntity<ApiResponse> updateVehicle(
+            @PathVariable Long id,
+            @RequestBody VehicleDto dto) {
+
+        ApiResponse response = vehicleService.updateVehicle(id, dto);
+        return ResponseEntity.ok(response);
+    }
+    
+//    @PutMapping("/vehicle/edit/{id}")
+//  public ResponseEntity<ApiResponse> updateVehicle(
+//          @PathVariable Long id,
+//          @RequestBody VehicleDto dto) {
+//
+//      ApiResponse response = vehicleService.updateVehicle(id, dto);
+//      return ResponseEntity.ok(response);
+//  }
+    
+    
+    @GetMapping("vehicle/{id}")
+    public ResponseEntity<VehicleResponse> getVehicleById(@PathVariable Long id) {
+//        Vehicle vehicle = vehicleService.getVehicleById(id);
+    	VehicleResponse vehicle = vehicleService.getVehicleById(id);
+    	if(vehicle == null) {
+    	    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle not found");
+    	}
+    	return ResponseEntity.ok(vehicle);
+    }
+    
 }

@@ -22,4 +22,6 @@ public interface ItemService {
     ApiResponse deleteById(Long itemId);
 
     ApiResponse deleteByName(String name);
+
+	List<ItemDto> getOutOfStockItems();
 }

@@ -1,5 +1,7 @@
 package com.application.vehicleservicemanagement.dto;
 
+import java.time.LocalTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,5 +18,10 @@ public class RegisterRequest {
     private String address;
     private String email;
     private String password;
+    
+ // Advisor Availability
+    private LocalTime workStartTime;
+    private LocalTime workEndTime;
+    private Integer slotDuration;
 
 }

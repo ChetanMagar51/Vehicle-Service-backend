@@ -1,11 +1,11 @@
 package com.application.vehicleservicemanagement.service;
 
+import java.util.HashMap;
+import java.util.List;
+
 import com.application.vehicleservicemanagement.dto.ApiResponse;
 import com.application.vehicleservicemanagement.dto.VehicleDto;
 import com.application.vehicleservicemanagement.dto.VehicleResponse;
-
-import java.util.HashMap;
-import java.util.List;
 
 public interface VehicleService {
     ApiResponse registerVehicle(VehicleDto vehicleDTO);
@@ -32,7 +32,7 @@ public interface VehicleService {
 
     List<VehicleResponse> getServicedVehiclesByServiceAdvisor(Long serviceAdvisorId);
 
-    ApiResponse scheduleVehicleForService(String vehicleNumber, Long serviceAdvisorId);
+    ApiResponse scheduleVehicleForService(String vehicleNumber, Long serviceAdvisorId,Long scheduleId);
 
     ApiResponse startVehicleService(String vehicleNumber);
 
@@ -41,4 +41,9 @@ public interface VehicleService {
     HashMap<String, Integer> getStatusSummary();
 
     HashMap<String, Integer> getStatusSummaryForAdvisor(Long advisorId);
+    
+    
+    
+
+	ApiResponse updateVehicle(Long id, VehicleDto dto);
 }

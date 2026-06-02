@@ -107,7 +107,7 @@ public class InvoiceService {
             tableVehicle.addCell(vehicle.getVehicleNumber());
 
             tableVehicle.addCell(new Phrase("Date", new Font(Font.TIMES_ROMAN, 12, Font.BOLD, Color.BLACK)));
-            tableVehicle.addCell(serviceRecord.getDate().format(DateTimeFormatter.ISO_DATE));
+            tableVehicle.addCell(serviceRecord.getServiceDate().format(DateTimeFormatter.ISO_DATE));
 
             Paragraph tablePara = new Paragraph(" Serviced Items List", titleFont);
 

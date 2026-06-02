@@ -1,12 +1,18 @@
 package com.application.vehicleservicemanagement.service.implementation;
 
-import com.application.vehicleservicemanagement.dto.ApiResponse;
-import com.application.vehicleservicemanagement.dto.RegisterRequest;
-import com.application.vehicleservicemanagement.dto.UserDto;
-import com.application.vehicleservicemanagement.entity.User;
-import com.application.vehicleservicemanagement.entity.Role;
-import com.application.vehicleservicemanagement.exception.ResourceNotFoundException;
-import com.application.vehicleservicemanagement.repository.UserRepository;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,12 +21,14 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import com.application.vehicleservicemanagement.dto.ApiResponse;
+import com.application.vehicleservicemanagement.dto.RegisterRequest;
+import com.application.vehicleservicemanagement.dto.ServiceAdvisorDto;
+import com.application.vehicleservicemanagement.dto.UserDto;
+import com.application.vehicleservicemanagement.entity.Role;
+import com.application.vehicleservicemanagement.entity.User;
+import com.application.vehicleservicemanagement.exception.ResourceNotFoundException;
+import com.application.vehicleservicemanagement.repository.UserRepository;
 
 public class UserServiceImplementationTest {
 
@@ -106,7 +114,7 @@ public class UserServiceImplementationTest {
         when(userRepository.findAllByRole(Role.SERVICE_ADVISOR)).thenReturn(serviceAdvisorList);
         when(modelMapper.map(any(User.class), eq(UserDto.class))).thenReturn(new UserDto());
 
-        List<UserDto> actualServiceAdvisorDtoList = userService.getAllServiceAdvisors();
+        List<ServiceAdvisorDto> actualServiceAdvisorDtoList = userService.getAllServiceAdvisors();
 
         assertEquals(1, actualServiceAdvisorDtoList.size());
 

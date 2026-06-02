@@ -17,8 +17,16 @@ public class ServiceStatusController {
     private final VehicleService vehicleService;
 
     @PostMapping("/schedule")
-    public ResponseEntity<ApiResponse> scheduleVehicleForService(@RequestParam(value = "vehicleNumber") String vehicleNumber, @RequestParam(value = "serviceAdvisorId") Long serviceAdvisorId) {
-        return new ResponseEntity<>(vehicleService.scheduleVehicleForService(vehicleNumber, serviceAdvisorId), HttpStatus.ACCEPTED);
+    public ResponseEntity<ApiResponse> scheduleVehicleForService(
+            @RequestParam("vehicleNumber") String vehicleNumber,
+            @RequestParam("serviceAdvisorId") Long serviceAdvisorId,
+            @RequestParam("scheduleId") Long scheduleId) {
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(vehicleService.scheduleVehicleForService(
+                        vehicleNumber,
+                        serviceAdvisorId,
+                        scheduleId));
     }
 
     @PostMapping("/startService")

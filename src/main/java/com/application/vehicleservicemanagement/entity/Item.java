@@ -25,4 +25,6 @@ public class Item {
 
     @Column(nullable = false)
     private Double price;
+    
+    private Integer quantity;
 }

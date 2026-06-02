@@ -1,10 +1,12 @@
 package com.application.vehicleservicemanagement.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.application.vehicleservicemanagement.dto.ApiResponse;
 import com.application.vehicleservicemanagement.dto.RegisterRequest;
+import com.application.vehicleservicemanagement.dto.ServiceAdvisorDto;
 import com.application.vehicleservicemanagement.dto.UserDto;
-
-import java.util.List;
 
 public interface UserService {
     ApiResponse createUser(RegisterRequest registerRequest);
@@ -12,8 +14,16 @@ public interface UserService {
     UserDto getUserById(Long id);
 
     List<UserDto> getAllUsers();
+    
+//    default List<ServiceAdvisorDto> getAllServiceAdvisorsWthiTime()	
+//    {
+//    	List<ServiceAdvisorDto> li = new ArrayList();
+//    	return li;
+//    }
+    
 
-    List<UserDto> getAllServiceAdvisors();
+
+    List<ServiceAdvisorDto> getAllServiceAdvisors();
 
     ApiResponse updateUserById(Long id, UserDto userDTO);
 

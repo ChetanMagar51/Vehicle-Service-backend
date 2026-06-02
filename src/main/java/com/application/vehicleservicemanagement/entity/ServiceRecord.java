@@ -12,36 +12,40 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "service_record")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ServiceRecord {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @DateTimeFormat
-    private LocalDateTime date;
-
-    @ElementCollection
-    private Map<Item, Integer> itemQuantityMap;
+    private LocalDateTime serviceDate;
 
     private Double amount;
 
-    @BooleanFlag
-    private Boolean isPaymentCompleted;
-
-    @BooleanFlag
     private Boolean isAdminApproved;
 
+    private Boolean isPaymentCompleted;
+
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle vehicle;
+
+    @ManyToOne
+    @JoinColumn(name = "service_advisor_id")
     private User serviceAdvisor;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private Vehicle vehicle;
+    @ElementCollection
+    @CollectionTable(
+        name = "service_record_items",
+        joinColumns = @JoinColumn(name = "service_record_id")
+    )
+    @MapKeyJoinColumn(name = "item_id")
+    @Column(name = "quantity")
+    private Map<Item, Integer> itemQuantityMap;
 }
