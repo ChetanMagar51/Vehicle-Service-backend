@@ -39,7 +39,7 @@ class AuthenticationControllerTest {
         request.setPassword("password123");
 
         when(authenticationService.register(any(RegisterRequest.class)))
-                .thenReturn(new ApiResponse("User registered successfully", "CREATED"));
+                .thenReturn(new ApiResponse("User registered successfully", "CREATED", request));
 
         mockMvc.perform(post("/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
