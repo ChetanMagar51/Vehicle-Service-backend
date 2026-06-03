@@ -12,11 +12,10 @@ public class CorsConfiguration {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedHeaders("*")
-                        .allowedOrigins(
-                                "https://your-app.vercel.app")
-                        .allowedMethods("*");
+            	registry.addMapping("/**")
+		                .allowedOriginPatterns("*")
+		                .allowedMethods("*")
+		                .allowedHeaders("*");
             }
         };
     }
