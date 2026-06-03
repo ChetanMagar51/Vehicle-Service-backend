@@ -1,11 +1,8 @@
 package com.application.vehicleservicemanagement.configuration;
 
-import com.application.vehicleservicemanagement.entity.Role;
-import com.application.vehicleservicemanagement.util.JwtAuthenticationEntryPoint;
-import com.application.vehicleservicemanagement.util.JwtAuthenticationFilter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +11,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.application.vehicleservicemanagement.entity.Role;
+import com.application.vehicleservicemanagement.util.JwtAuthenticationEntryPoint;
+import com.application.vehicleservicemanagement.util.JwtAuthenticationFilter;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +34,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**", "/swagger-ui/**",
                                 "/swagger-resources/**","/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
                         .requestMatchers("/admin/**", "/user/**", "/owner/**", "/invoice/**").hasAnyAuthority(Role.ADMIN.name())
                         .requestMatchers("/serviceAdvisor/**").hasAnyAuthority(Role.SERVICE_ADVISOR.name())
                         .requestMatchers("/vehicle/**", "/item/**", "/service/**", "/stock/**", "/service-record/**", "/revenue/**").hasAnyAuthority(Role.ADMIN.name(), Role.SERVICE_ADVISOR.name())
