@@ -45,7 +45,7 @@ class ItemControllerTest {
         itemDto.setId(1L);
         itemDto.setName("Oil");
 
-        when(itemService.add(any(ItemDto.class))).thenReturn(new ApiResponse("Item added successfully", "CREATED"));
+        when(itemService.add(any(ItemDto.class))).thenReturn(new ApiResponse("Item added successfully", "CREATED", itemDto));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/item/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -115,7 +115,7 @@ class ItemControllerTest {
         itemDto.setId(1L);
         itemDto.setName("Engine");
 
-        when(itemService.updateById(1L, itemDto)).thenReturn(new ApiResponse("Item updated successfully", "OK"));
+        when(itemService.updateById(1L, itemDto)).thenReturn(new ApiResponse("Item updated successfully", "OK", itemDto));
 
         mockMvc.perform(MockMvcRequestBuilders.put("/item/update/id")
                         .param("id", "1")
@@ -132,7 +132,7 @@ class ItemControllerTest {
         itemDto.setId(1L);
         itemDto.setName("Gearbox");
 
-        when(itemService.updateByName("Steering", itemDto)).thenReturn(new ApiResponse("Item updated successfully", "OK"));
+        when(itemService.updateByName("Steering", itemDto)).thenReturn(new ApiResponse("Item updated successfully", "OK", itemDto));
 
         mockMvc.perform(MockMvcRequestBuilders.put("/item/update/name")
                         .param("name", "Steering") // Request with the expected name
@@ -145,7 +145,7 @@ class ItemControllerTest {
 
     @Test
     void testDeleteItemById() throws Exception {
-        when(itemService.deleteById(1L)).thenReturn(new ApiResponse("Item deleted successfully", "OK"));
+        when(itemService.deleteById(1L)).thenReturn(new ApiResponse("Item deleted successfully", "OK", mockMvc));
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/item/delete/id")
                         .param("id", "1"))
@@ -156,7 +156,7 @@ class ItemControllerTest {
 
     @Test
     void testDeleteItemByName() throws Exception {
-        when(itemService.deleteByName("Clutch")).thenReturn(new ApiResponse("Item deleted successfully", "OK"));
+        when(itemService.deleteByName("Clutch")).thenReturn(new ApiResponse("Item deleted successfully", "OK", mockMvc));
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/item/delete/name")
                         .param("name", "Clutch"))

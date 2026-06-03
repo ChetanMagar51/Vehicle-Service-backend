@@ -46,7 +46,7 @@ public class OwnerControllerTest {
         UserDto userDto = new UserDto();
         userDto.setId(1L);
         userDto.setFirstName("John");
-        when(ownerService.addOwner(any(UserDto.class))).thenReturn(new ApiResponse("Owner added successfully", "CREATED"));
+        when(ownerService.addOwner(any(UserDto.class))).thenReturn(new ApiResponse("Owner added successfully", "CREATED", userDto));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/owner/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -139,7 +139,7 @@ public class OwnerControllerTest {
         owner.setId(1L);
         owner.setFirstName("Mathew");
 
-        when(ownerService.updateOwnerById(eq(1L), any(UserDto.class))).thenReturn(new ApiResponse("Owner updated successfully","OK"));
+        when(ownerService.updateOwnerById(eq(1L), any(UserDto.class))).thenReturn(new ApiResponse("Owner updated successfully","OK", owner));
 
         mockMvc.perform(MockMvcRequestBuilders.put("/owner/1/update")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -155,7 +155,7 @@ public class OwnerControllerTest {
         owner.setPhone("1234567890");
 
         when(ownerService.updateOwnerByPhone(eq("1234567890"), any(UserDto.class)))
-                .thenReturn(new ApiResponse("Owner updated successfully", "OK"));
+                .thenReturn(new ApiResponse("Owner updated successfully", "OK", owner));
 
         mockMvc.perform(MockMvcRequestBuilders.put("/owner/update")
                         .param("phone", "1234567890")

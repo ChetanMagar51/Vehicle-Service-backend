@@ -177,7 +177,7 @@ public class VehicleServiceImplementationTest {
         when(userRepository.findByRoleAndId(Role.SERVICE_ADVISOR, serviceAdvisorId)).thenReturn(Optional.of(serviceAdvisor));
         when(advisorService.updateAdvisorStatusDuringScheduling(serviceAdvisor)).thenReturn(true);
 
-        ApiResponse response = vehicleService.scheduleVehicleForService(vehicleNumber, serviceAdvisorId);
+        ApiResponse response = vehicleService.scheduleVehicleForService(vehicleNumber, serviceAdvisorId, null);
 
         assertNotNull(response);
 //        assertEquals("Vehicle scheduled successfully.", response.getMessage());

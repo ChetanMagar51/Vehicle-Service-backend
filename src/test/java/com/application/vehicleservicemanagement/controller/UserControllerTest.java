@@ -1,8 +1,14 @@
 package com.application.vehicleservicemanagement.controller;
 
-import com.application.vehicleservicemanagement.dto.ApiResponse;
-import com.application.vehicleservicemanagement.dto.UserDto;
-import com.application.vehicleservicemanagement.service.UserService;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +21,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.application.vehicleservicemanagement.dto.ApiResponse;
+import com.application.vehicleservicemanagement.dto.UserDto;
+import com.application.vehicleservicemanagement.service.UserService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -87,7 +88,7 @@ class UserControllerTest {
         advisor2.setFirstName("Advisor2");
 
         List<UserDto> advisorList = Arrays.asList(advisor1, advisor2);
-        when(userService.getAllServiceAdvisors()).thenReturn(advisorList);
+        when(userService.getAllServiceAdvisors());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/user/get/all/serviceAdvisor")
                         .accept(MediaType.APPLICATION_JSON))
@@ -105,7 +106,7 @@ class UserControllerTest {
         updatedUserDto.setId(1L);
         updatedUserDto.setFirstName("John");
 
-        when(userService.updateUserById(eq(1L), any(UserDto.class))).thenReturn(new ApiResponse("User updated successfully","OK"));
+        when(userService.updateUserById(eq(1L), any(UserDto.class))).thenReturn(new ApiResponse("User updated successfully","OK", updatedUserDto));
 
         mockMvc.perform(MockMvcRequestBuilders.patch("/user/update")
                         .param("id", "1")
@@ -116,7 +117,7 @@ class UserControllerTest {
 
     @Test
     void deleteUser() throws Exception {
-        when(userService.deleteUserById(1L)).thenReturn(new ApiResponse("User deleted successfully","OK"));
+        when(userService.deleteUserById(1L)).thenReturn(new ApiResponse("User deleted successfully","OK", mockMvc));
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/user/delete")
                         .param("id", "1"))

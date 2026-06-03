@@ -47,7 +47,7 @@ class VehicleControllerTest {
         vehicleDto.setId(1L);
         vehicleDto.setVehicleNumber("ABC123");
 
-        when(vehicleService.registerVehicle(any(VehicleDto.class))).thenReturn(new ApiResponse("Vehicle registered successfully", "CREATED"));
+        when(vehicleService.registerVehicle(any(VehicleDto.class))).thenReturn(new ApiResponse("Vehicle registered successfully", "CREATED", vehicleDto));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/vehicle/register")
                         .contentType(MediaType.APPLICATION_JSON)
