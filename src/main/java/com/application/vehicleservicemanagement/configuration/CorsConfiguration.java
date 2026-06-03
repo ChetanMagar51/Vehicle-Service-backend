@@ -14,9 +14,13 @@ public class CorsConfiguration {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedHeaders("*")
-                        .allowedOrigins("*")
+                        .allowedOrigins(
+                                "https://your-app.vercel.app")
                         .allowedMethods("*");
             }
         };
     }
+    
+    
+
 }
