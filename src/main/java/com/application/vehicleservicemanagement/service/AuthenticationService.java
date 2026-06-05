@@ -6,4 +6,6 @@ public interface AuthenticationService {
     ApiResponse register(RegisterRequest registerRequest);
 
     AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest);
+    
+    ApiResponse registerAdmin(AdminRegisterRequest registerRequest);
 }

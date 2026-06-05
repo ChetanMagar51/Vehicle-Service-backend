@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.application.vehicleservicemanagement.dto.AdminRegisterRequest;
 import com.application.vehicleservicemanagement.dto.AdvisorAvailabilityDto;
 import com.application.vehicleservicemanagement.dto.AdvisorScheduleDto;
 import com.application.vehicleservicemanagement.dto.ApiResponse;
@@ -87,6 +88,34 @@ public class UserServiceImplementation implements UserService {
 //		return ApiResponse.builder().message("User registered successfully !!").status("Success").build();
 //	}
 	  
+	  
+	  
+	  
+	  
+	  @Transactional
+	  public ApiResponse createUserAdmin(AdminRegisterRequest registerRequest) {
+
+	      User user = User.builder()
+	              .firstName(registerRequest.getFirstName())
+	              .lastName(registerRequest.getLastName())
+	              .phone(registerRequest.getPhone())
+	              .address(registerRequest.getAddress())
+	              .email(registerRequest.getEmail())
+	              .password(passwordEncoder.encode(registerRequest.getPassword()))
+	             
+	              .role(Role.ADMIN)
+	              .build();
+
+	      User savedUser = userRepository.save(user);
+	      
+	      
+	    		  return ApiResponse.builder()
+	    	              .message("User registered successfully !!")
+	    	              .status("Success")
+	    	              .build();
+	    	  
+	      
+	  }
 	  
 	  @Override
 	  @Transactional

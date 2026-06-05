@@ -1,6 +1,20 @@
 package com.application.vehicleservicemanagement.service.implementation;
 
-import com.application.vehicleservicemanagement.dto.*;
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.stereotype.Service;
+
+import com.application.vehicleservicemanagement.dto.AdminRegisterRequest;
+import com.application.vehicleservicemanagement.dto.ApiResponse;
+import com.application.vehicleservicemanagement.dto.AuthenticationRequest;
+import com.application.vehicleservicemanagement.dto.AuthenticationResponse;
+import com.application.vehicleservicemanagement.dto.RegisterRequest;
+import com.application.vehicleservicemanagement.dto.UserDto;
 import com.application.vehicleservicemanagement.entity.User;
 import com.application.vehicleservicemanagement.exception.InvalidRoleException;
 import com.application.vehicleservicemanagement.exception.ResourceNotFoundException;
@@ -8,15 +22,8 @@ import com.application.vehicleservicemanagement.repository.UserRepository;
 import com.application.vehicleservicemanagement.service.AuthenticationService;
 import com.application.vehicleservicemanagement.service.UserService;
 import com.application.vehicleservicemanagement.util.JwtUtil;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -54,4 +61,11 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
                 .expiration(jwtUtil.extractExpiration(jwtToken))
                 .build();
     }
+    
+    @Override
+    public ApiResponse registerAdmin(AdminRegisterRequest registerRequest) {
+        return userService.createUserAdmin(registerRequest);
+    }
+    
+    
 }

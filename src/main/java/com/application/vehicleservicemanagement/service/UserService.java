@@ -3,6 +3,7 @@ package com.application.vehicleservicemanagement.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.application.vehicleservicemanagement.dto.AdminRegisterRequest;
 import com.application.vehicleservicemanagement.dto.ApiResponse;
 import com.application.vehicleservicemanagement.dto.RegisterRequest;
 import com.application.vehicleservicemanagement.dto.ServiceAdvisorDto;
@@ -28,4 +29,7 @@ public interface UserService {
     ApiResponse updateUserById(Long id, UserDto userDTO);
 
     ApiResponse deleteUserById(Long id);
+    
+    
+    ApiResponse createUserAdmin(AdminRegisterRequest registerRequest);
 }

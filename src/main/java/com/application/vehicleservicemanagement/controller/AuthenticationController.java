@@ -33,4 +33,9 @@ public class AuthenticationController {
     public ResponseEntity<UserDto> getCurrentUser(Principal principal) {
         return ResponseEntity.ok(modelMapper.map(userDetailsService.loadUserByUsername(principal.getName()), UserDto.class));
     }
+    
+    @PostMapping("/signup/admin")
+    public ResponseEntity<ApiResponse> registerAdmin(@RequestBody AdminRegisterRequest registerRequest) {
+        return new ResponseEntity<>(authenticationService.registerAdmin(registerRequest), HttpStatus.CREATED);
+    }
 }
